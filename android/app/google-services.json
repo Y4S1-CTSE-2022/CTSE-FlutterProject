@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "705571721860",
+    "firebase_url": "https://fluttergamingproject-a6af8-default-rtdb.firebaseio.com",
+    "project_id": "fluttergamingproject-a6af8",
+    "storage_bucket": "fluttergamingproject-a6af8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705571721860:android:ce17f5724d5f4647a768d1",
+        "android_client_info": {
+          "package_name": "com.example.epic_games"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705571721860-gkk8f7j46nlngdbsev56e34e0ps0dn27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRVG0YphGjPtC_bprsCMHQklXEqSanim8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705571721860-gkk8f7j46nlngdbsev56e34e0ps0dn27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
