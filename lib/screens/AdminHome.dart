@@ -1,4 +1,5 @@
 import 'package:epic_games/models/Game.dart';
+import 'package:epic_games/screens/AdminMenueHome.dart';
 import 'package:epic_games/screens/GameDetail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,7 +19,7 @@ class AdminHome extends StatefulWidget {
 
 
 class _AdminHomeState extends State<AdminHome> {
-  var _firebaseRef = FirebaseDatabase().reference().child('Games');
+  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("GameList");
   DateTime firstPress;
 
   @override
@@ -55,6 +56,15 @@ class _AdminHomeState extends State<AdminHome> {
                         color: accentColor,
                         fontSize: size.height*0.03)
                 ),
+
+                //back button
+                leading: new IconButton(
+                  icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
+                  onPressed: () =>    Navigator.of(context).pushAndRemoveUntil(
+                     MaterialPageRoute(builder: (c) => AdminMenueHome()),
+                         (route) => false)
+                ),
+
                 centerTitle: true,
                 actions: <Widget>[
                   Container(

@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import 'AdminMenueHome.dart';
 import 'GameList.dart';
 import 'Register.dart';
 import '../util/constants.dart';
@@ -58,7 +59,7 @@ class _LoginState extends State<Login> {
           pr.hide();
           if(user.email == "admin@gmail.com"){
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => AdminHome()),
+                MaterialPageRoute(builder: (c) =>AdminMenueHome()),
                     (route) => false);
           }else {
             Navigator.of(context).pushAndRemoveUntil(

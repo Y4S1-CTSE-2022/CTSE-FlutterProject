@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:epic_games/models/Game.dart';
 import 'package:epic_games/screens/GameDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -49,6 +51,8 @@ class _GameListState extends State<GameList> {
                   if (snap.hasData && !snap.hasError && snap.data != null && snap.data.snapshot.value != null) {
                     //assign fetched data to map
                     Map data = snap.data.snapshot.value;
+
+
                     List item = [];
                     //add data to the list
                     data.forEach((index, data) => item.add({"id": index, "name": data['name'],"category": data['category'],"video_url": data['video_url'],"year": data['year'],"description": data['description'],"image": data['image'],"rate": data['rate']}));
@@ -142,6 +146,9 @@ class _GameListState extends State<GameList> {
                   else
                     return Container(
                       color: primaryColor,
+                      child: Text("Empty List",textAlign:TextAlign.center,style: TextStyle(fontSize: 25,color: Colors.white)),
+
+
                     );
                 },
               ),

@@ -1,4 +1,4 @@
-package com.example.epic_games
+package com.sliit.epic_games
 
 import io.flutter.embedding.android.FlutterActivity
 
