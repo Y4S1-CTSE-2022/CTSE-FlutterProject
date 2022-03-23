@@ -1,4 +1,7 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:epic_games/models/Category.dart';
+import 'package:epic_games/models/UserList.dart';
+import 'package:epic_games/screens/CategoryList.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +13,23 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'AdminHome.dart';
 import '../models/Game.dart';
 import '../util/constants.dart';
+import 'UserListView.dart';
+import 'UserListView.dart';
 
-class UpdateGame extends StatefulWidget {
-  final Game game;
-  UpdateGame({Key key, @required this.game}) : super(key: key);
+class UpdateUser extends StatefulWidget {
+  final UserList userList;
+  UpdateUser({Key key, @required this.userList}) : super(key: key);
   @override
-  _UpdateGameState createState() => new _UpdateGameState();
+  _UpdateUserState createState() => new _UpdateUserState();
 }
 
 
-class _UpdateGameState extends State<UpdateGame> {
-  final _nameController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _videoLinkController = TextEditingController();
-  final _categoryController = TextEditingController();
-  double rate = 0;
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("GameList");
+class _UpdateUserState extends State<UpdateUser> {
+  final _namecontroller = TextEditingController();
+  final _emailController = TextEditingController();
+  final _contactController = TextEditingController();
+
+  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Users");
 
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();
@@ -35,24 +38,22 @@ class _UpdateGameState extends State<UpdateGame> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nameController.text = widget.game.name;
-    _yearController.text = widget.game.year.toString();
-    _descriptionController.text = widget.game.description;
-    _videoLinkController.text = widget.game.video_url;
-    _categoryController.text = widget.game.category;
-    rate = widget.game.rate;
+    _namecontroller.text = widget.userList.name;
+    _emailController.text = widget.userList.email;
+    _contactController.text = widget.userList.contact;
+
+
   }
 
   Future update() async {
 
-    _firebaseRef.child(widget.game.id).update({
-      "name": _nameController.text,
-      "year": int.parse(_yearController.text),
-      "description": _descriptionController.text,
-      "video_url": _videoLinkController.text,
-      "rate": rate,
+    _firebaseRef.child(widget.userList.id).update({
+      "name": _namecontroller.text,
+      "email": _emailController.text,
+      "contact": _contactController.text,
+
     });
-    Fluttertoast.showToast(msg:'Game Updated Successfully');
+    Fluttertoast.showToast(msg:'UserList Updated Successfully');
     pr.hide();
     Navigator.of(context).pop();
   }
@@ -70,7 +71,7 @@ class _UpdateGameState extends State<UpdateGame> {
             elevation: 0,
             toolbarHeight: size.height*0.08,
             backgroundColor: primaryColor,
-            title: Text("Game Update",
+            title: Text(_namecontroller.text,
                 style: TextStyle(
                     color: accentColor,
                     fontSize: size.height*0.03)
@@ -100,10 +101,10 @@ class _UpdateGameState extends State<UpdateGame> {
                                   text: "Do you want to delete this game?",
                                   confirmBtnText: "Yes",
                                   onConfirmBtnTap: (){
-                                    _firebaseRef.child(widget.game.id).set(null);
+                                    _firebaseRef.child(widget.userList.id).set(null);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(builder: (c) => AdminHome()),
+                                        MaterialPageRoute(builder: (c) => UserListView()),
                                             (route) => false);
                                   },
                                   cancelBtnText: "No",
@@ -121,7 +122,7 @@ class _UpdateGameState extends State<UpdateGame> {
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
                             width: size.width*0.9,
-                            child:  Text("Name of the Game",
+                            child:  Text("Name:",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
@@ -131,10 +132,10 @@ class _UpdateGameState extends State<UpdateGame> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _nameController,
+                            controller: _namecontroller,
                             cursorColor: primaryColor,
                             decoration: InputDecoration(
-                              hintText: "Name",
+                              hintText: "user name",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 // width: 0.0 produces a thin "hairline" border
@@ -160,7 +161,7 @@ class _UpdateGameState extends State<UpdateGame> {
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
                             width: size.width*0.9,
-                            child:  Text("Category",
+                            child:  Text("Contact:",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
@@ -170,11 +171,10 @@ class _UpdateGameState extends State<UpdateGame> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _categoryController,
+                            controller: _contactController,
                             cursorColor: primaryColor,
-                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: "Category",
+                              hintText: "07XXXXXXXX",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 // width: 0.0 produces a thin "hairline" border
@@ -191,16 +191,18 @@ class _UpdateGameState extends State<UpdateGame> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Category can\'t be empty';
+                                return 'Contact can\'t be empty';
                               }
                               return null;
                             },
                           ),
                         ),
+
+
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
                             width: size.width*0.9,
-                            child:  Text("Year",
+                            child:  Text("Email:",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
@@ -210,93 +212,12 @@ class _UpdateGameState extends State<UpdateGame> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _yearController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: "Year",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
-                              ),
-                              filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
-                            ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Year can\'t be empty';
-                              }else if(value.length != 4){
-                                return 'Enter a valid year';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Video Link",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                          width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _videoLinkController,
-                            cursorColor: primaryColor,
-                            decoration: InputDecoration(
-                              hintText: "Video Link",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
-                              ),
-                              filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
-                            ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Video Link can\'t be empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Description",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                          width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _descriptionController,
+                            controller: _emailController,
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.multiline,
                             maxLines: 3,
                             decoration: InputDecoration(
-                              hintText: "Description",
+                              hintText: "user@gmail.com",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 // width: 0.0 produces a thin "hairline" border
@@ -313,39 +234,13 @@ class _UpdateGameState extends State<UpdateGame> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Description can\'t be empty';
+                                return 'email can\'t be empty';
                               }
                               return null;
                             },
                           ),
                         ),
-                        Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Rating",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
-                          child: RatingBar.builder(
-                            initialRating: rate,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (rating) {
-                              print(rating);
-                              rate = rating;
-                            },
-                          ),
-                        ),
+
                         Container(height: size.height*0.02 ),
                         Container(
                           width: size.width*0.9,
@@ -367,7 +262,7 @@ class _UpdateGameState extends State<UpdateGame> {
                                 }
                               },
                               child: Text(
-                                "Update",
+                                "Update User",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: size.height*0.02),
