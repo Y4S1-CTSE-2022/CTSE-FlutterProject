@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:epic_games/screens/AdminHome.dart';
-import 'package:epic_games/screens/Categories.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,61 +16,47 @@ class AddGameList extends StatefulWidget {
 
 
 class _AddGameListState extends State<AddGameList> {
-  DateTime currentBackPressTime;
-  int popped = 0;
+  // DateTime currentBackPressTime;
+  // int popped = 0;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _video_urlController = TextEditingController();
+  final _videoUrlController = TextEditingController();
   final _categoryController = TextEditingController();
   final _yearController = TextEditingController();
-  final _discriptioController = TextEditingController();
-  final _rateController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _ratingController = 0;
   ProgressDialog pr;
 
-  var _firebaseRef = FirebaseDatabase().reference();
+  var _firebaseRef = FirebaseDatabase().reference().child("Games");
 
   Future addGametoDB() async {
     try {
-
-
-
-
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
-      _firebaseRef.child("Games").child("GameList").push().set({
+      _firebaseRef.push().set({
         "name": _nameController.text,
-        "video_url": _video_urlController.text,
+        "video_url": _videoUrlController.text,
         "category": _categoryController.text,
         "id": user.uid+_nameController.text,
         "image":1233,
-        "rate":_rateController.value,
-        "description":_discriptioController,
-        "year":_yearController,
-
-        // "name": "ssdsds",
-        // "video_url": "sdsd",
-        // "category":"dsdsds",
-        // "id": "sasas",
-        // "image":"sasdasa",
-        // "rate":4,
-        // "description":"sdsdsds",
-        // "year":2022,
-
+        "description":_descriptionController.text,
+        "year":_yearController.text,
+        "rating": _ratingController
       });
-
-
-
-
 
       Fluttertoast.showToast(msg:'Added Successfully');
       pr.hide();
+      clearData();
 
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (c) => AdminHome()),
       //         (route) => false);
 
 
+    } on FirebaseAuthException catch (e) {
+      pr.hide();
+      Fluttertoast.showToast(msg: e.message);
 
     } catch (e) {
       pr.hide();
@@ -82,17 +65,21 @@ class _AddGameListState extends State<AddGameList> {
     }
   }
 
-
-
-
-
+  void clearData() {
+    _nameController.clear();
+    _nameController.clear();
+    _videoUrlController.clear();
+    _categoryController.clear();
+    _yearController.clear();
+    _descriptionController.clear();
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     pr = ProgressDialog(context, type: ProgressDialogType.Normal,
@@ -106,7 +93,7 @@ class _AddGameListState extends State<AddGameList> {
             elevation: 0,
             toolbarHeight: size.height*0.08,
             backgroundColor: primaryColor,
-            title: Text("ADD GAMES  ",
+            title: Text("ADD GAME",
                 style: TextStyle(
                     color: accentColor,
                     fontSize: size.height*0.03)
@@ -131,18 +118,10 @@ class _AddGameListState extends State<AddGameList> {
                     child: Column(
                       children: <Widget>[
                         Container(height: size.height*0.02),
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
-                        //   width: size.width,
-                        //   //Display the logo
-                        //   child: Image.asset('assets/logo.jpg'),
-                        // ),
-
-
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
                             width: size.width*0.9,
-                            child:  Text("Game's Name",
+                            child:  Text("Name of the Game",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
@@ -155,7 +134,7 @@ class _AddGameListState extends State<AddGameList> {
                             controller: _nameController,
                             cursorColor: primaryColor,
                             decoration: InputDecoration(
-                              hintText: " Name",
+                              hintText: "Name",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 // width: 0.0 produces a thin "hairline" border
@@ -174,7 +153,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Game name can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -212,7 +191,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Category can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -229,7 +208,7 @@ class _AddGameListState extends State<AddGameList> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _video_urlController,
+                            controller: _videoUrlController,
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.url,
                             decoration: InputDecoration(
@@ -250,7 +229,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'video_url can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -267,7 +246,6 @@ class _AddGameListState extends State<AddGameList> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                              obscureText: true,
                               controller: _yearController,
                               cursorColor: primaryColor,
                               keyboardType: TextInputType.datetime,
@@ -285,14 +263,14 @@ class _AddGameListState extends State<AddGameList> {
                               style: TextStyle(
                                   fontSize: size.height*0.023
                               ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Year can\'t be empty';
-                              }if(value.length < 4){
-                                return 'Year length should more than 4';
-                              }
-                              return value;
-                            },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Year can\'t be empty';
+                                }if(value.length < 4){
+                                  return 'Year length should more than 4';
+                                }
+                                return null;
+                              },
                           ),
                         ),
                         Container(
@@ -308,47 +286,7 @@ class _AddGameListState extends State<AddGameList> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _discriptioController,
-                            obscureText: true,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: "Description",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
-                            ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Description can\'t be empty';
-                              }
-                              return value;
-                            },
-                          ),
-                        ),
-                        Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Image",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                          width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _discriptioController,
-                            obscureText: true,
+                            controller: _descriptionController,
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
@@ -369,29 +307,29 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Description can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
                             width: size.width*0.9,
-                            child:  Text("Rate",
+                            child:  Text("Image",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
                             )
                         ),
+                        // TODO:Image
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _rateController,
-                            obscureText: true,
+                            controller: _descriptionController,
                             cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
-                              hintText: "5",
+                              hintText: "Description",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -408,16 +346,10 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Description can\'t be empty';
                               }
-                              if(value.length >= 5){
-                                return 'Rate can\'t be more than 5';
-                              }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
-
-
-
 
                         Container(height: size.height*0.02 ),
                         Container(
@@ -440,7 +372,7 @@ class _AddGameListState extends State<AddGameList> {
                                 }
                               },
                               child: Text(
-                                "Add Games",
+                                "Add Game",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: size.height*0.02),
