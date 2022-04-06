@@ -1,4 +1,5 @@
 import 'package:epic_games/models/Game.dart';
+import 'package:epic_games/screens/AddCategory.dart';
 import 'package:epic_games/screens/GameDetail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -25,7 +26,6 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -126,7 +126,11 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   child: Text('ADD CATEGORIES', style: TextStyle(fontSize: 17.0),),
                   color: Colors.blueAccent,
                   textColor: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (c) => AddCategory()),
+                            (route) => false);
+                  },
                 ),
               ),
 
