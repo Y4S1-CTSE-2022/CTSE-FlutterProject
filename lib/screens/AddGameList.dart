@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../util/constants.dart';
 import 'AdminMenueHome.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AddGameList extends StatefulWidget {
 
@@ -25,15 +30,20 @@ class _AddGameListState extends State<AddGameList> {
   final _yearController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ratingController = 0;
-  var filename = 'No file selected';
   ProgressDialog pr;
 
-  UploadTask task;
-  File file;
+  var path = null;
+  var filename = 'No file selected';
 
+
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   var _firebaseRef = FirebaseDatabase().reference().child("Games");
 
   Future addGametoDB() async {
+    if (path != null) {
+      uploadFile(filename, path);
+    }
+
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
@@ -43,7 +53,7 @@ class _AddGameListState extends State<AddGameList> {
         "video_url": _videoUrlController.text,
         "category": _categoryController.text,
         "id": user.uid+_nameController.text,
-        "image":1233,
+        "image":filename,
         "description":_descriptionController.text,
         "year":_yearController.text,
         "rating": _ratingController
@@ -65,12 +75,11 @@ class _AddGameListState extends State<AddGameList> {
     } catch (e) {
       pr.hide();
       print(e);
-      Fluttertoast.showToast(msg:'Something Happened');
+      Fluttertoast.showToast(msg:'Something went wrong');
     }
   }
 
   Future selectFile() async {
-    print("HERE");
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
         type: FileType.custom,
@@ -79,12 +88,21 @@ class _AddGameListState extends State<AddGameList> {
 
     if (result == null) return;
 
-    final path = result.files.single.path;
+    path = result.files.single.path;
     filename = result.files.single.name;
 
     print(filename);
+  }
 
-    setState(() => file = File(path));
+  Future uploadFile(filename, path) async {
+    File file = File(path);
+
+    try {
+      await storage.ref('games_img/$filename').putFile(file);
+    } on FirebaseException catch (e) {
+      print(e.message);
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
   }
 
   void clearData() {
