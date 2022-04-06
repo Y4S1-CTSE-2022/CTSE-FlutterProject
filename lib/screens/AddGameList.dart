@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:epic_games/models/Category.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,15 +32,30 @@ class _AddGameListState extends State<AddGameList> {
   final _yearController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ratingController = 0;
-  var _selectedCategory = 'Select';
   ProgressDialog pr;
+
+  Category category; //TODO
+  List<Category> categoryList = [];
+  var _selectedCategory = 'Select';
 
   var path = null;
   var filename = 'No file selected';
 
-
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  var _firebaseRef = FirebaseDatabase().reference().child("Games");
+  final _firebaseRef = FirebaseDatabase().reference().child("Games");
+  final _dbCategories = FirebaseDatabase().reference().child("Categories");
+
+  Future loadCategories() async {
+    print(categoryList.length);
+    _dbCategories.once().then((DatabaseEvent databaseEvent) {
+      Map<dynamic, dynamic> categories = databaseEvent.snapshot.value;
+
+      categories.forEach((key, value) {
+        Category category = Category.fromJson(value);
+        categoryList.add(category);
+      });
+    });
+  }
 
   Future addGametoDB() async {
     if (path != null) {
@@ -127,6 +144,7 @@ class _AddGameListState extends State<AddGameList> {
   @override
   void initState() {
     super.initState();
+    loadCategories();
   }
 
   @override
@@ -292,7 +310,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Please enter a video_url';
+                                return 'Please enter a video url';
                               }
                               return null;
                             },
