@@ -25,7 +25,11 @@ class _AddGameListState extends State<AddGameList> {
   final _yearController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ratingController = 0;
+  var filename = 'No file selected';
   ProgressDialog pr;
+
+  UploadTask task;
+  File file;
 
   var _firebaseRef = FirebaseDatabase().reference().child("Games");
 
@@ -65,6 +69,24 @@ class _AddGameListState extends State<AddGameList> {
     }
   }
 
+  Future selectFile() async {
+    print("HERE");
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg']
+    );
+
+    if (result == null) return;
+
+    final path = result.files.single.path;
+    filename = result.files.single.name;
+
+    print(filename);
+
+    setState(() => file = File(path));
+  }
+
   void clearData() {
     _nameController.clear();
     _nameController.clear();
@@ -81,6 +103,7 @@ class _AddGameListState extends State<AddGameList> {
 
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
     pr = ProgressDialog(context, type: ProgressDialogType.Normal,
         isDismissible: false,
@@ -320,34 +343,39 @@ class _AddGameListState extends State<AddGameList> {
                                     fontSize: size.height*0.02)
                             )
                         ),
-                        // TODO:Image
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                          width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _descriptionController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              hintText: "Description",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: size.width * 0.3,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: primaryColorDark,
+                                    padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                                  ),
+                                  onPressed: () => {
+                                    print("FILE"),
+                                    selectFile()
+                                  },
+                                  child: Text("Upload"),
+                                )
                               ),
-                              filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
-                            ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Description can\'t be empty';
-                              }
-                              return null;
-                            },
+
+                              Expanded(
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                                    width: size.width * 0.8,
+                                    child: Text(
+                                      filename,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: size.height*0.02),
+                                    ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
 
