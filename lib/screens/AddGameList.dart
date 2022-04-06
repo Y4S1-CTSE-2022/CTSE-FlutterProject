@@ -86,12 +86,16 @@ class _AddGameListState extends State<AddGameList> {
         allowedExtensions: ['png', 'jpg']
     );
 
-    if (result == null) return;
+    if (result == null) {
+      return;
+    } else {
+      Fluttertoast.showToast(msg:'$filename');
+    }
 
     path = result.files.single.path;
     filename = result.files.single.name;
 
-    print(filename);
+
   }
 
   Future uploadFile(filename, path) async {
@@ -363,37 +367,16 @@ class _AddGameListState extends State<AddGameList> {
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: size.width * 0.3,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: primaryColorDark,
-                                    padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                                  ),
-                                  onPressed: () => {
-                                    print("FILE"),
-                                    selectFile()
-                                  },
-                                  child: Text("Upload"),
-                                )
-                              ),
-
-                              Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                                    width: size.width * 0.8,
-                                    child: Text(
-                                      filename,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: size.height*0.02),
-                                    ),
-                                ),
-                              ),
-                            ],
+                          width: size.width * 0.9,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColorDark,
+                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                            ),
+                            onPressed: () => {
+                              selectFile()
+                            },
+                            child: Text("Upload image"),
                           ),
                         ),
 
