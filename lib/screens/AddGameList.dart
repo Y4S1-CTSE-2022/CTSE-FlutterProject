@@ -30,6 +30,7 @@ class _AddGameListState extends State<AddGameList> {
   final _yearController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ratingController = 0;
+  var _selectedCategory = 'Select';
   ProgressDialog pr;
 
   var path = null;
@@ -48,16 +49,20 @@ class _AddGameListState extends State<AddGameList> {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
-      _firebaseRef.push().set({
-        "name": _nameController.text,
-        "video_url": _videoUrlController.text,
-        "category": _categoryController.text,
-        "id": user.uid+_nameController.text,
-        "image":filename,
-        "description":_descriptionController.text,
-        "year":_yearController.text,
-        "rating": _ratingController
-      });
+      if (_selectedCategory != 'Select') {
+        _firebaseRef.push().set({
+          "name": _nameController.text,
+          "video_url": _videoUrlController.text,
+          "category": _categoryController.text,
+          "id": user.uid+_nameController.text,
+          "image":filename,
+          "description":_descriptionController.text,
+          "year":_yearController.text,
+          "rating": _ratingController
+        });
+      } else {
+        Fluttertoast.showToast(msg:'No category selected');
+      }
 
       Fluttertoast.showToast(msg:'Added Successfully');
       pr.hide();
@@ -66,7 +71,6 @@ class _AddGameListState extends State<AddGameList> {
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (c) => AdminHome()),
       //         (route) => false);
-
 
     } on FirebaseAuthException catch (e) {
       pr.hide();
@@ -116,6 +120,7 @@ class _AddGameListState extends State<AddGameList> {
     _categoryController.clear();
     _yearController.clear();
     _descriptionController.clear();
+    _selectedCategory = 'Select';
   }
 
   @override
@@ -214,30 +219,38 @@ class _AddGameListState extends State<AddGameList> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _categoryController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: "Action",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.white,
+                                  width: 1,
+                                  style: BorderStyle.solid
                               ),
+                              borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
                               filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
+                              fillColor: Colors.white
                             ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Category can\'t be empty';
-                              }
-                              return null;
+                            value: _selectedCategory,
+                            items: <String>['Select', 'Action', 'Multiplayer', 'Puzzle', 'Racing']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String newVal) {
+                              setState(() {
+                                _selectedCategory = newVal;
+                              });
                             },
+                            style: TextStyle(
+                              fontSize: size.height*0.023,
+                              color: Colors.black
+                            ),
+                            dropdownColor: Colors.white,
                           ),
                         ),
                         Container(
