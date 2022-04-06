@@ -90,16 +90,17 @@ class _AddGameListState extends State<AddGameList> {
         allowedExtensions: ['png', 'jpg']
     );
 
+    // Generate timestamp for filename
+    var timestamp = DateTime.now().microsecondsSinceEpoch;
+
     if (result == null) {
       return;
     } else {
-      Fluttertoast.showToast(msg:'$filename');
+      Fluttertoast.showToast(msg: timestamp.toString());
     }
 
     path = result.files.single.path;
     filename = result.files.single.name;
-
-
   }
 
   Future uploadFile(filename, path) async {
@@ -201,7 +202,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Game name can\'t be empty';
+                                return 'Please enter the name of the game';
                               }
                               return null;
                             },
@@ -251,6 +252,12 @@ class _AddGameListState extends State<AddGameList> {
                               color: Colors.black
                             ),
                             dropdownColor: Colors.white,
+                            validator: (value) {
+                              if (value == 'Select') {
+                                return 'Please select a category';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         Container(
@@ -285,7 +292,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'video_url can\'t be empty';
+                                return 'Please enter a video_url';
                               }
                               return null;
                             },
@@ -323,9 +330,9 @@ class _AddGameListState extends State<AddGameList> {
                               ),
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return 'Year can\'t be empty';
-                                }if(value.length < 4){
-                                  return 'Year length should more than 4';
+                                  return 'Please enter year';
+                                } if (value.length < 4){
+                                  return 'Please enter a correct year';
                                 }
                                 return null;
                               },
@@ -363,7 +370,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Description can\'t be empty';
+                                return 'Please add a description';
                               }
                               return null;
                             },
