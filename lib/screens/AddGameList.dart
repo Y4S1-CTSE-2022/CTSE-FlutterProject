@@ -28,16 +28,13 @@ class _AddGameListState extends State<AddGameList> {
   final _yearController = TextEditingController();
   final _discriptioController = TextEditingController();
   final _rateController = TextEditingController();
+  final _imageController = TextEditingController();
   ProgressDialog pr;
 
   var _firebaseRef = FirebaseDatabase().reference();
 
   Future addGametoDB() async {
     try {
-
-
-
-
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
@@ -45,35 +42,19 @@ class _AddGameListState extends State<AddGameList> {
         "name": _nameController.text,
         "video_url": _video_urlController.text,
         "category": _categoryController.text,
-        "id": user.uid+_nameController.text,
-        "image":1233,
-        "rate":_rateController.value,
-        "description":_discriptioController,
-        "year":_yearController,
-
-        // "name": "ssdsds",
-        // "video_url": "sdsd",
-        // "category":"dsdsds",
-        // "id": "sasas",
-        // "image":"sasdasa",
-        // "rate":4,
-        // "description":"sdsdsds",
-        // "year":2022,
-
+        "image":_imageController.text,
+        "rate":double.parse(_rateController.text),
+        "description":_discriptioController.text,
+        "year":int.parse(_yearController.text),
+        "id":user.uid+_nameController.text,
       });
-
-
-
-
 
       Fluttertoast.showToast(msg:'Added Successfully');
       pr.hide();
 
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (c) => AdminHome()),
-      //         (route) => false);
-
-
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (c) => AdminHome()),
+              (route) => false);
 
     } catch (e) {
       pr.hide();
@@ -174,7 +155,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Game name can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -193,7 +174,7 @@ class _AddGameListState extends State<AddGameList> {
                           child: TextFormField(
                             controller: _categoryController,
                             cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "Action",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
@@ -212,7 +193,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Category can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -231,7 +212,7 @@ class _AddGameListState extends State<AddGameList> {
                           child: TextFormField(
                             controller: _video_urlController,
                             cursorColor: primaryColor,
-                            keyboardType: TextInputType.url,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "http://game.com",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
@@ -250,7 +231,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'video_url can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -267,10 +248,10 @@ class _AddGameListState extends State<AddGameList> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                              obscureText: true,
+
                               controller: _yearController,
                               cursorColor: primaryColor,
-                              keyboardType: TextInputType.datetime,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: "2022",
                                 hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
@@ -291,7 +272,7 @@ class _AddGameListState extends State<AddGameList> {
                               }if(value.length < 4){
                                 return 'Year length should more than 4';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -309,7 +290,7 @@ class _AddGameListState extends State<AddGameList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _discriptioController,
-                            obscureText: true,
+
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -330,7 +311,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Description can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -347,8 +328,8 @@ class _AddGameListState extends State<AddGameList> {
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _discriptioController,
-                            obscureText: true,
+                            controller: _imageController,
+
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
@@ -369,7 +350,7 @@ class _AddGameListState extends State<AddGameList> {
                               if (value.isEmpty) {
                                 return 'Description can\'t be empty';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -387,7 +368,7 @@ class _AddGameListState extends State<AddGameList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _rateController,
-                            obscureText: true,
+
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -411,7 +392,7 @@ class _AddGameListState extends State<AddGameList> {
                               if(value.length >= 5){
                                 return 'Rate can\'t be more than 5';
                               }
-                              return value;
+                              return null;
                             },
                           ),
                         ),
@@ -459,5 +440,6 @@ class _AddGameListState extends State<AddGameList> {
     );
 
   }
+
 }
 
