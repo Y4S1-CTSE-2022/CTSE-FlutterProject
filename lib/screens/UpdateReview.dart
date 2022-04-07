@@ -95,7 +95,7 @@ class _UpdateReviewState extends State<UpdateReview> {
                                   _firebaseRef.child(widget.review.id).set(null);
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (c) => CategoryList()),
+                                      MaterialPageRoute(builder: (c) => ViewReview()),
                                           (route) => false);
                                 },
                                 cancelBtnText: "No",
