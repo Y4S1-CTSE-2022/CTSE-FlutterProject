@@ -34,7 +34,7 @@ class _UpdateCategoryState extends State<UpdateCategory> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _categorynameController.text = widget.category.categoryname;
+    _categorynameController.text = widget.category.categoryName;
     _descriptionController.text = widget.category.description;
   }
 

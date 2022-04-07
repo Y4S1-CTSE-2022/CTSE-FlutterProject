@@ -169,7 +169,8 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>CategoryList()),
+                        MaterialPageRoute(builder: (c) => CategoryList()),
+                            (route) => false);
                   },
                 ),
               ),
