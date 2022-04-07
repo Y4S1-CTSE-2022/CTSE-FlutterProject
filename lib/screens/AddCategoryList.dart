@@ -85,11 +85,11 @@ class _AddCategoryListState extends State<AddCategoryList> {
     if (result == null) {
       return;
     } else {
-      Fluttertoast.showToast(msg: timestamp.toString(),backgroundColor: Colors.grey,textColor: Colors.black);
+      Fluttertoast.showToast(msg: result.files.single.name,backgroundColor: Colors.grey,textColor: Colors.black);
     }
 
     path = result.files.single.path;
-    filename = timestamp.toString();
+    filename = timestamp.toString() + "." + result.files.single.extension;
   }
 
   Future uploadFile(filename, path) async {
