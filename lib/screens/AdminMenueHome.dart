@@ -126,7 +126,7 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                                 MaterialPageRoute(builder: (c) => ViewGames()),
                                     (route) => false);
                           },
-                          child: Text("Games List",
+                          child: Text("Game List",
                             style: TextStyle(
                               color: textColorDark,
                               fontFamily: 'Nunito',

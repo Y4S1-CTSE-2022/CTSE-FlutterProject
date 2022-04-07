@@ -1,7 +1,6 @@
 import 'package:epic_games/models/Game.dart';
 import 'package:epic_games/screens/AdminMenueHome.dart';
 import 'package:epic_games/screens/GameDetail.dart';
-import 'package:epic_games/screens/Register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +24,7 @@ class _ViewGamesState extends State<ViewGames> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
   }
 
@@ -54,17 +54,18 @@ class _ViewGamesState extends State<ViewGames> {
                 title: Text("Game List",
                     style: TextStyle(
                         color: accentColor,
-                        fontFamily: 'Nunito',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 25)),
-                centerTitle: true,
+                        fontSize: size.height*0.03)
+                ),
+
                 //back button
                 leading: new IconButton(
-                  icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
-                  onPressed: () =>    Navigator.of(context).pushAndRemoveUntil(
-                     MaterialPageRoute(builder: (c) => AdminMenueHome()),
-                         (route) => false)
+                    icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
+                    onPressed: () =>    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (c) => AdminMenueHome()),
+                            (route) => false)
                 ),
+
+                centerTitle: true,
                 actions: <Widget>[
                   Container(
                     margin: const EdgeInsets.only(right:5.0),
@@ -94,9 +95,8 @@ class _ViewGamesState extends State<ViewGames> {
                         //assign fetched data to map
                         Map data = snap.data.snapshot.value;
                         List item = [];
-                        print(snap.data.snapshot.value);
                         //add data to the list
-                        data.forEach((index, data) => item.add({"id": index, "name": data['name'],"category": data['category'],"video_url": data['video_url'],"year": data['year'],"description": data['description'],"image": data['image'],"rating": data['rating']}));
+                        data.forEach((index, data) => item.add({"id": index, "name": data['name'],"category": data['category'],"video_url": data['video_url'],"year": data['year'],"description": data['description'],"image": data['image'],"rate": data['rating']}));
                         //create a list view
                         return ListView.builder(
                           itemCount: item.length,
@@ -105,29 +105,27 @@ class _ViewGamesState extends State<ViewGames> {
                               return Container(
                                 margin: EdgeInsets.only(bottom: 20,left: 20,right: 20),
                                 child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    color: primaryColorDark,
-                                    elevation: 20,
-                                    // child:GestureDetector(
-                                    //   onTap: (){
-                                    //     Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
-                                    //     Navigator.push(context,
-                                    //         MaterialPageRoute(builder: (BuildContext context) {
-                                    //           return UpdateGame(game:game);
-                                    //         }));
-                                    //   },
+                                    color: adminCColor,
+                                    elevation: 10,
+                                    child:GestureDetector(
+                                      onTap: (){
+                                        Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (BuildContext context) {
+                                              return UpdateGame(game:game);
+                                            }));
+                                      },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                                         child: Row(
                                           children: [
                                             Container(
+                                              width: size.width*0.2,
                                               child: Container(
-                                                width: 150,
-                                                height: 250,
+                                                width: size.width*0.3,
+                                                height: size.width*0.3,
                                                 child: Card(
-                                                    elevation: 10,
+                                                    elevation: 20,
                                                     shadowColor: Colors.black12,
                                                     color: accentColor,
                                                     shape: RoundedRectangleBorder(
@@ -141,8 +139,9 @@ class _ViewGamesState extends State<ViewGames> {
                                                 ),
                                               ),
                                             ),
+
                                             Container(
-                                              width: 210,
+                                              width: size.width*0.8-70,
                                               padding: EdgeInsets.only(left: 10),
                                               child: Column(
                                                 children: [
@@ -153,46 +152,36 @@ class _ViewGamesState extends State<ViewGames> {
                                                           children:[
                                                             Text(item[index]['name'],
                                                                 style: TextStyle(
-                                                                    color: textColorLight,
-                                                                    fontFamily: 'Nunito',
-                                                                    fontWeight: FontWeight.w700,
-                                                                    fontSize: 28
-                                                                ),
-                                                            )
-                                                          ]
-                                                      )
-                                                  ),
-
-                                                  Container(
-                                                      height: size.width*0.07,
-                                                      margin: EdgeInsets.only(top: 5),
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Row(
-                                                          children:[
+                                                                  color: primaryColor,
+                                                                  fontSize: size.width*0.06,
+                                                                )
+                                                            ),
+                                                            Text(' - ',
+                                                                style: TextStyle(
+                                                                  color: Colors.pink,
+                                                                  fontSize: size.width*0.05,
+                                                                )
+                                                            ),
                                                             Text(item[index]['year'].toString(),
-                                                              style: TextStyle(
-                                                                  color: textColorLight,
-                                                                  fontFamily: 'Nunito',
-                                                                  fontWeight: FontWeight.w700,
-                                                                  fontSize: 16
-                                                              ),
+                                                                style: TextStyle(
+                                                                  color: accentColor,
+                                                                  fontSize: size.width*0.05,
+                                                                )
                                                             ),
                                                           ]
                                                       )
                                                   ),
                                                   Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    margin: EdgeInsets.only(top: 5),
-                                                    child: Chip(
-                                                      label: Text(item[index]['category'],
-                                                        style: TextStyle(
-                                                            color: primaryColorDark,
-                                                            fontFamily: 'Nunito',
-                                                            fontWeight: FontWeight.w700,
-                                                            fontSize: 12
-                                                        ),
+                                                    child: RatingBarIndicator(
+                                                      rating: item[index]['rate'].toDouble(),
+                                                      itemBuilder: (context, index) => Icon(
+                                                        Icons.stars_rounded,
+                                                        color: Colors.pink,
                                                       ),
-                                                      backgroundColor: textFieldColor,
+                                                      itemCount: 5,
+                                                      itemSize: size.height*0.03,
+                                                      direction: Axis.horizontal,
+                                                      itemPadding: EdgeInsets.all(5),
                                                     ),
                                                   ),
                                                   Container(
@@ -201,60 +190,21 @@ class _ViewGamesState extends State<ViewGames> {
                                                     child: Text(item[index]['description'],
                                                         maxLines: 3,
                                                         style: TextStyle(
-                                                          color: textFieldColor,
-                                                          fontFamily: 'Nunito',
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16
-                                                      ),
+                                                          color: Colors.black54,
+                                                          fontSize: size.width*0.035,
+                                                        )
                                                     ),
                                                   ),
                                                   Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    margin: EdgeInsets.only(bottom: 10),
-                                                    child: RatingBarIndicator(
-                                                      rating: item[index]['rating'].toDouble(),
-                                                      itemBuilder: (context, index) => Icon(
-                                                        Icons.stars_rounded,
-                                                        color: accentColor,
-                                                      ),
-                                                      itemCount: 5,
-                                                      itemSize: 25,
-                                                      direction: Axis.horizontal,
-                                                      itemPadding: EdgeInsets.only(right: 5),
+                                                    height: size.width*0.05,
+                                                    alignment: Alignment.topRight,
+                                                    child: Text(item[index]['category'],
+                                                        style: TextStyle(
+                                                          color: Colors.pink,
+                                                          fontSize: size.width*0.035,
+                                                        )
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.bottomRight,
-                                                    margin: EdgeInsets.only(bottom: 5),
-                                                    width: 100,
-                                                    child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      child: ElevatedButton(
-                                                        style: ElevatedButton.styleFrom(
-                                                          primary: accentColor,
-                                                        ),
-                                                        onPressed: () {
-                                                          Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
-                                                          // Navigator.of(context).pushAndRemoveUntil(
-                                                          //     MaterialPageRoute(builder: (c) => UpdateGame()),
-                                                          //         (route) => false);
-                                                          print(game);
-                                                          Navigator.push(context,
-                                                              MaterialPageRoute(builder: (BuildContext context) {
-                                                                return UpdateGame(game:game);
-                                                                // return AdminMenueHome();
-                                                              }));
-                                                        },
-                                                        child: Text("Review",
-                                                          style: TextStyle(
-                                                            color: textColorDark,
-                                                            fontFamily: 'Nunito',
-                                                            fontWeight: FontWeight.w700,
-                                                            fontSize: 18,
-                                                          ),),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                             )
@@ -262,7 +212,7 @@ class _ViewGamesState extends State<ViewGames> {
                                         ),
                                       ),
                                     )
-                                // ),
+                                ),
                               );
                             }else{
                               return Container();

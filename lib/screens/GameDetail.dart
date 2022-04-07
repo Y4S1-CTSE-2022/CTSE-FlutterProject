@@ -115,7 +115,7 @@ class _GameDetailState extends State<GameDetail> {
                                   widget.game.year,
                                   widget.game.description,
                                   widget.game.image,
-                                  widget.game.rate);
+                                  widget.game.rating);
                               Navigator.push(context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) {
