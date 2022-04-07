@@ -7,13 +7,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'AdminHome.dart';
+import 'ViewGames.dart';
 import '../models/Game.dart';
 import '../util/constants.dart';
 
 class UpdateGame extends StatefulWidget {
-  final Game game;
-  UpdateGame({Key key, @required this.game}) : super(key: key);
+  Game game = new Game("MDrjkhksdahkdakhakdkad", "sssssq", "Puzzle", "http://fggg.com", 2012, "hgsadsgd", "1649315579675274.png", 0);
+  // final Game game;
+  // UpdateGame({Key key, @required this.game}) : super(key: key);
   @override
   _UpdateGameState createState() => new _UpdateGameState();
 }
@@ -26,8 +27,8 @@ class _UpdateGameState extends State<UpdateGame> {
   final _videoLinkController = TextEditingController();
   final _categoryController = TextEditingController();
   double rate = 0;
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("GameList");
-
+  var _firebaseRef = FirebaseDatabase().reference().child('Games');
+  var _selectedCategory = 'Select';
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();
 
@@ -39,19 +40,26 @@ class _UpdateGameState extends State<UpdateGame> {
     _yearController.text = widget.game.year.toString();
     _descriptionController.text = widget.game.description;
     _videoLinkController.text = widget.game.video_url;
-    _categoryController.text = widget.game.category;
+    _selectedCategory = widget.game.category;
     rate = widget.game.rate;
   }
 
   Future update() async {
 
-    _firebaseRef.child(widget.game.id).update({
+    _firebaseRef.child("-N-2kSzah2OIHkGWyQhP").update({
+      "category": _selectedCategory,
       "name": _nameController.text,
       "year": int.parse(_yearController.text),
       "description": _descriptionController.text,
       "video_url": _videoLinkController.text,
-      "rate": rate,
+      "rating": rate,
     });
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => ViewGames()),
+            (route) => false);
+
+
     Fluttertoast.showToast(msg:'Game Updated Successfully');
     pr.hide();
     Navigator.of(context).pop();
@@ -73,9 +81,10 @@ class _UpdateGameState extends State<UpdateGame> {
             title: Text("Game Update",
                 style: TextStyle(
                     color: accentColor,
-                    fontSize: size.height*0.03)
-            ),
-            centerTitle: true,
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25)),
+          centerTitle: true,
         ),
         body:SafeArea(
             child:  Container(
@@ -100,10 +109,10 @@ class _UpdateGameState extends State<UpdateGame> {
                                   text: "Do you want to delete this game?",
                                   confirmBtnText: "Yes",
                                   onConfirmBtnTap: (){
-                                    _firebaseRef.child(widget.game.id).set(null);
+                                    _firebaseRef.child("-N-2kSzah2OIHkGWyQhP").set(null);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(builder: (c) => AdminHome()),
+                                        MaterialPageRoute(builder: (c) => ViewGames()),
                                             (route) => false);
                                   },
                                   cancelBtnText: "No",
@@ -123,8 +132,10 @@ class _UpdateGameState extends State<UpdateGame> {
                             width: size.width*0.9,
                             child:  Text("Name of the Game",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -132,22 +143,41 @@ class _UpdateGameState extends State<UpdateGame> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _nameController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: "Name",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Game",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -158,40 +188,42 @@ class _UpdateGameState extends State<UpdateGame> {
                           ),
                         ),
                         Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Category",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _categoryController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: "Category",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: adminCColor,
+                                  width: 2,
+                                  style: BorderStyle.solid
                               ),
-                              filled: true,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              fillColor: textColorLight,
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
+                            value: _selectedCategory,
+                            items: <String>['Select', 'Action', 'Multiplayer', 'Puzzle', 'Racing']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String newVal) {
+                              setState(() {
+                                _selectedCategory = newVal;
+                              });
+                            },
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                fontSize: size.height*0.023,
+                                color: textColorLight
                             ),
+                            dropdownColor: textColorDark,
                             validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Category can\'t be empty';
+                              if (value == 'Select') {
+                                return 'Please select a category';
                               }
                               return null;
                             },
@@ -202,8 +234,10 @@ class _UpdateGameState extends State<UpdateGame> {
                             width: size.width*0.9,
                             child:  Text("Year",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -211,23 +245,41 @@ class _UpdateGameState extends State<UpdateGame> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _yearController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
                               hintText: "Year",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -244,8 +296,10 @@ class _UpdateGameState extends State<UpdateGame> {
                             width: size.width*0.9,
                             child:  Text("Video Link",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -253,22 +307,41 @@ class _UpdateGameState extends State<UpdateGame> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _videoLinkController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
+                            keyboardType: TextInputType.url,
                             decoration: InputDecoration(
-                              hintText: "Video Link",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Url",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -283,33 +356,52 @@ class _UpdateGameState extends State<UpdateGame> {
                             width: size.width*0.9,
                             child:  Text("Description",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18))
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _descriptionController,
-                            cursorColor: primaryColor,
                             keyboardType: TextInputType.multiline,
-                            maxLines: 3,
+                            maxLines: null,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
                               hintText: "Description",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -319,41 +411,43 @@ class _UpdateGameState extends State<UpdateGame> {
                             },
                           ),
                         ),
-                        Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
-                            width: size.width*0.9,
-                            child:  Text("Rating",
-                                style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
-                            )
-                        ),
-                        Container(
-                          child: RatingBar.builder(
-                            initialRating: rate,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (rating) {
-                              print(rating);
-                              rate = rating;
-                            },
-                          ),
-                        ),
+                        // Container(
+                        //     margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
+                        //     width: size.width*0.9,
+                        //     child:  Text("Rating",
+                        //         style: TextStyle(
+                        //             color: accentColor,
+                        //             fontSize: size.height*0.02)
+                        //     )
+                        // ),
+                        // Container(
+                        //   child: RatingBar.builder(
+                        //     initialRating: rate,
+                        //     minRating: 1,
+                        //     direction: Axis.horizontal,
+                        //     allowHalfRating: true,
+                        //     itemCount: 5,
+                        //     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        //     itemBuilder: (context, _) => Icon(
+                        //       Icons.star,
+                        //       color: Colors.amber,
+                        //     ),
+                        //     onRatingUpdate: (rating) {
+                        //       print(rating);
+                        //       rate = rating;
+                        //     },
+                        //   ),
+                        // ),
                         Container(height: size.height*0.02 ),
                         Container(
                           width: size.width*0.9,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: FlatButton(
-                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                              color: accentColor,
+                            borderRadius: BorderRadius.circular(10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: accentColor,
+                                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                              ),
                               onPressed: () async {
                                 if (FocusScope.of(context)
                                     .isFirstFocus) {
@@ -366,16 +460,17 @@ class _UpdateGameState extends State<UpdateGame> {
                                   update();
                                 }
                               },
-                              child: Text(
-                                "Update",
+                              child: Text("Update Game",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.height*0.02),
-                              ),
+                                  color: textColorDark,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),),
                             ),
                           ),
                         ),
-                        Container(height: size.height*0.03 ),
+                        Container(height: size.height*0.03 )
                       ],
                     ),
                   ),

@@ -84,8 +84,9 @@ class _RegisterState extends State<Register> {
             title: Text("Registration",
                 style: TextStyle(
                     color: accentColor,
-                    fontSize: size.height*0.03)
-            ),
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25)),
             centerTitle: true,
         ),
         body:SafeArea(
@@ -108,8 +109,10 @@ class _RegisterState extends State<Register> {
                             width: size.width*0.9,
                             child:  Text("Full Name",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -117,22 +120,41 @@ class _RegisterState extends State<Register> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _nameController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "Full Name",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -147,8 +169,10 @@ class _RegisterState extends State<Register> {
                             width: size.width*0.9,
                             child:  Text("Contact No.",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -156,21 +180,41 @@ class _RegisterState extends State<Register> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _contactController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              hintText: "Contact No.",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+                              hintText: "Contact No",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -187,8 +231,10 @@ class _RegisterState extends State<Register> {
                             width: size.width*0.9,
                             child:  Text("Email",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -196,21 +242,41 @@ class _RegisterState extends State<Register> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _emailController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               hintText: "Email",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -227,32 +293,54 @@ class _RegisterState extends State<Register> {
                             width: size.width*0.9,
                             child:  Text("Password",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                              obscureText: true,
-                              controller: _passwordController,
-                              cursorColor: primaryColor,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  borderSide: BorderSide.none,
-                                ),
-                                filled: true,
-                                contentPadding:EdgeInsets.all(15.0),
-                                fillColor:textFieldColor,
+                            obscureText: true,
+                            controller: _passwordController,
+                            cursorColor: textColorLight,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              style: TextStyle(
-                                  fontSize: size.height*0.023
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
                               ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              contentPadding:EdgeInsets.all(15.0),
+                            ),
+                            style: TextStyle(
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
+                            ),
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Password can\'t be empty';
@@ -268,8 +356,10 @@ class _RegisterState extends State<Register> {
                             width: size.width*0.9,
                             child:  Text("Confirm Password",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -278,21 +368,41 @@ class _RegisterState extends State<Register> {
                           child: TextFormField(
                             controller: _confirmPasswordController,
                             obscureText: true,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "Confirm Password",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'AddGameList.dart';
-import 'AdminHome.dart';
+import 'ViewGames.dart';
 import 'Login.dart';
 import 'UpdateGame.dart';
 import '../util/constants.dart';
@@ -137,7 +137,7 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>AdminHome()),
+                        MaterialPageRoute(builder: (c) => ViewGames()),
                             (route) => false);
                   },
                 ),
@@ -169,7 +169,8 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>CategoryList()),
+                        MaterialPageRoute(builder: (c) => CategoryList()),
+                            (route) => false);
                   },
                 ),
               ),

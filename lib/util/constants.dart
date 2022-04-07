@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 
-
-const primaryColor = Color(0xFF021f3f);
-const accentColor = Color(0xFFF2855E);
-const primaryColorDark = Color(0xFF6FEF8D);
-const textFieldColor = Color(0xFFFFFFFF);
+const primaryColor = Color(0xff01080d);
+const primaryColorDark = Color(0xFF242430);
+const accentColor = Color(0xFFFFD701);
+const textFieldColor = Color(0xFFA8A8A8);
+const textColorLight = Color(0xFFFFFFFF);
+const textColorDark = Color(0xFF1A1A1A);
 const adminCColor = Color(0xE8FFF7EE);
 
 extension EmailValidator on String {
