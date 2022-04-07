@@ -29,7 +29,7 @@ class _UpdateUserState extends State<UpdateUser> {
   final _emailController = TextEditingController();
   final _contactController = TextEditingController();
 
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Users");
+  var _firebaseRef = FirebaseDatabase().reference().child("Users");
 
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();

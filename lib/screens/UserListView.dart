@@ -23,7 +23,7 @@ class UserListView extends StatefulWidget {
 
 
 class _UserListViewState extends State<UserListView> {
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Users");
+  var _firebaseRef = FirebaseDatabase().reference().child("Users");
   DateTime firstPress;
 
   @override

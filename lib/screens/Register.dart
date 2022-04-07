@@ -25,7 +25,7 @@ class _RegisterState extends State<Register> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   ProgressDialog pr;
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Users");
+  var _firebaseRef = FirebaseDatabase().reference().child("Users");
 
   Future register() async {
     try {

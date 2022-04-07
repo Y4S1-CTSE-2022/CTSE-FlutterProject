@@ -26,7 +26,7 @@ class _UpdateGameState extends State<UpdateGame> {
   final _videoLinkController = TextEditingController();
   final _categoryController = TextEditingController();
   double rate = 0;
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("GameList");
+  var _firebaseRef = FirebaseDatabase().reference().child('Games');
 
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();
@@ -40,7 +40,7 @@ class _UpdateGameState extends State<UpdateGame> {
     _descriptionController.text = widget.game.description;
     _videoLinkController.text = widget.game.video_url;
     _categoryController.text = widget.game.category;
-    rate = widget.game.rate;
+    rate = widget.game.rating;
   }
 
   Future update() async {

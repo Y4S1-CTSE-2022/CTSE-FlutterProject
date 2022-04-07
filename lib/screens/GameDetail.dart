@@ -113,7 +113,7 @@ class _GameDetailState extends State<GameDetail> {
                       ),
                       Container(
                         child: RatingBarIndicator(
-                          rating: widget.game.rate.toDouble(),
+                          rating: widget.game.rating.toDouble(),
                           itemBuilder: (context, index) => Icon(
                             Icons.star,
                             color: Colors.amber,

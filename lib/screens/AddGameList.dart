@@ -38,12 +38,12 @@ class _AddGameListState extends State<AddGameList> {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
-      _firebaseRef.child("Games").child("GameList").push().set({
+      _firebaseRef.child("Games").push().set({
         "name": _nameController.text,
         "video_url": _video_urlController.text,
         "category": _categoryController.text,
         "image":_imageController.text,
-        "rate":double.parse(_rateController.text),
+        "rating":double.parse(_rateController.text),
         "description":_discriptioController.text,
         "year":int.parse(_yearController.text),
         "id":user.uid+_nameController.text,
