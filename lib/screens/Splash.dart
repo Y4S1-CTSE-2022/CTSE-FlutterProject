@@ -4,10 +4,6 @@ import 'package:epic_games/screens/AdminMenueHome.dart';
 import 'package:epic_games/screens/Categories.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-
-import 'ViewGames.dart';
-import 'GameList.dart';
 import 'Login.dart';
 import '../util/constants.dart';
 
@@ -61,12 +57,6 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return WillPopScope(
         onWillPop: () async {
           return Navigator.canPop(context);
