@@ -100,12 +100,12 @@ class _RegisterState extends State<Register> {
                         Container(height: size.height*0.02),
                         Container(
                           margin: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
-                          width: size.width,
+                          width: 100,
                           //Display the logo
-                          child: Image.asset('assets/splash.gif'),
+                          child: Image.asset('assets/logo.png'),
                         ),
                         Container(
-                            margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
+                            margin: const EdgeInsets.only(top: 20),
                             width: size.width*0.9,
                             child:  Text("Full Name",
                                 style: TextStyle(
@@ -416,12 +416,14 @@ class _RegisterState extends State<Register> {
                         ),
                         Container(height: size.height*0.02 ),
                         Container(
-                          width: size.width*0.9,
+                          width: 390,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: FlatButton(
-                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                              color: accentColor,
+                            borderRadius: BorderRadius.circular(10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: accentColor,
+                                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                              ),
                               onPressed: () async {
                                 if (FocusScope.of(context)
                                     .isFirstFocus) {
@@ -434,12 +436,13 @@ class _RegisterState extends State<Register> {
                                   register();
                                 }
                               },
-                              child: Text(
-                                "Sign Up",
+                              child: Text("Sign Up",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.height*0.02),
-                              ),
+                                  color: textColorDark,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),),
                             ),
                           ),
                         ),

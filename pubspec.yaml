@@ -63,6 +63,7 @@ flutter:
     - assets/Puzzle-Games.jpg
     - assets/Racing-Games.jpg
     - assets/Runner-Games.jpg
+    - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

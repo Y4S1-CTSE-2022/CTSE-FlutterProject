@@ -110,6 +110,18 @@ class _LoginState extends State<Login> {
                       child: Image.asset('assets/splash.gif'),
                     ),
                     Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          "LINK",
+                          style: TextStyle(
+                              color: textColorLight,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 50
+                          ),
+                        ),
+                      ),
+
+                    Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
                         width: size.width * 0.85,
                         child: TextFormField(
@@ -250,7 +262,7 @@ class _LoginState extends State<Login> {
                     ),
 
                     Container(
-                      height: size.height * 0.01,
+                      height: size.height * 0.03,
                     ),
                     Container(
                       child: GestureDetector(
