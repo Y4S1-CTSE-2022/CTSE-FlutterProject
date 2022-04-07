@@ -1,8 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:epic_games/screens/AdminHome.dart';
-import 'package:epic_games/screens/Categories.dart';
-import 'package:epic_games/screens/CategoryList.dart';
 import 'package:epic_games/screens/ViewReview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -77,7 +73,7 @@ class _AddReviewState extends State<AddReview> {
           elevation: 0,
           toolbarHeight: size.height*0.08,
           backgroundColor: primaryColor,
-          title: Text("ADD CATEGORIES  ",
+          title: Text("ADD REVIEWS  ",
               style: TextStyle(
                   color: accentColor,
                   fontSize: size.height*0.03)

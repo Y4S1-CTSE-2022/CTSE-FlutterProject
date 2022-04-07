@@ -333,7 +333,7 @@ class _AddGameListState extends State<AddGameList> {
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
-                              hintText: "Description",
+                              hintText: "Image",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -348,7 +348,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Description can\'t be empty';
+                                return 'Image can\'t be empty';
                               }
                               return null;
                             },
@@ -387,7 +387,7 @@ class _AddGameListState extends State<AddGameList> {
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
-                                return 'Description can\'t be empty';
+                                return 'Rate can\'t be empty';
                               }
                               if(value.length >= 5){
                                 return 'Rate can\'t be more than 5';
