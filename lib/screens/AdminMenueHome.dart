@@ -28,7 +28,6 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -171,7 +170,6 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (c) =>CategoryList()),
-                            (route) => false);
                   },
                 ),
               ),
