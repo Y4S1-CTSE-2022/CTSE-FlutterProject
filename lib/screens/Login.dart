@@ -121,19 +121,35 @@ class _LoginState extends State<Login> {
                             prefixIcon: Icon(Icons.email_outlined,
                                 color: accentColor),
                             hintStyle: TextStyle(
-                                fontSize: size.height * 0.022,
-                                color: Colors.black26),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(5)),
-                              borderSide: BorderSide.none,
+                                color: Colors.grey,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: adminCColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
                             ),
-                            filled: true,
-                            contentPadding: EdgeInsets.all(18.0),
-                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: adminCColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: accentColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            contentPadding:EdgeInsets.all(15.0),
                           ),
                           style: TextStyle(
-                            fontSize: size.height * 0.023,
+                              color: textColorLight,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -157,19 +173,35 @@ class _LoginState extends State<Login> {
                             prefixIcon: Icon(Icons.lock_outline,
                                 color: accentColor),
                             hintStyle: TextStyle(
-                                fontSize: size.height * 0.022,
-                                color: Colors.black26),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(5)),
-                              borderSide: BorderSide.none,
+                                color: Colors.grey,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: adminCColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
                             ),
-                            filled: true,
-                            contentPadding: EdgeInsets.all(18.0),
-                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: adminCColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: accentColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            contentPadding:EdgeInsets.all(15.0),
                           ),
                           style: TextStyle(
-                            fontSize: size.height * 0.023,
+                              color: textColorLight,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -181,36 +213,42 @@ class _LoginState extends State<Login> {
                     ),
                     Container(height: size.height * 0.025),
                     Container(
-                        width: size.width * 0.85,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: FlatButton(
+                      width: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
                             padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                            color: accentColor,
-                            onPressed: () async {
-                              if (FocusScope
-                                  .of(context)
-                                  .isFirstFocus) {
-                                FocusScope.of(context).requestFocus(
-                                    new FocusNode());
-                              }
-                              pr = ProgressDialog(context, type: ProgressDialogType.Normal,
-                                  isDismissible: false,
-                                  showLogs: true);
-                              pr.update(message: "Authenticating...");
-                              if (_formKey.currentState.validate()) {
-                                await pr.show();
-                                authenticateUser(_emailController.text,
-                                    _passwordController.text);
-                              }
-                            },
-                            child: Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white,fontSize: size.height*0.02),
-                            ),
                           ),
-                        )
+                          onPressed: () async {
+                            if (FocusScope
+                                .of(context)
+                                .isFirstFocus) {
+                              FocusScope.of(context).requestFocus(
+                                  new FocusNode());
+                            }
+                            pr = ProgressDialog(context, type: ProgressDialogType.Normal,
+                                isDismissible: false,
+                                showLogs: true);
+                            pr.update(message: "Authenticating...");
+                            if (_formKey.currentState.validate()) {
+                              await pr.show();
+                              authenticateUser(_emailController.text,
+                                  _passwordController.text);
+                            }
+                          },
+                          child: Text("Login",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),),
+                        ),
+                      ),
                     ),
+
                     Container(
                       height: size.height * 0.01,
                     ),

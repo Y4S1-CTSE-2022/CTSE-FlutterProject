@@ -12,7 +12,7 @@ import '../models/Game.dart';
 import '../util/constants.dart';
 
 class UpdateGame extends StatefulWidget {
-  Game game = new Game("-N-1rhkxVoQsFe050mLT", "sssss", "Puzzle", "http://fggg.com", 2012, "hgsadsgd", "1649315579675274.png", 0);
+  Game game = new Game("MDrjkhksdahkdakhakdkad", "sssssq", "Puzzle", "http://fggg.com", 2012, "hgsadsgd", "1649315579675274.png", 0);
   // final Game game;
   // UpdateGame({Key key, @required this.game}) : super(key: key);
   @override
@@ -46,7 +46,7 @@ class _UpdateGameState extends State<UpdateGame> {
 
   Future update() async {
 
-    _firebaseRef.child("-N-1rhkxVoQsFe050mLT").update({
+    _firebaseRef.child("-N-2kSzah2OIHkGWyQhP").update({
       "category": _selectedCategory,
       "name": _nameController.text,
       "year": int.parse(_yearController.text),
@@ -109,7 +109,7 @@ class _UpdateGameState extends State<UpdateGame> {
                                   text: "Do you want to delete this game?",
                                   confirmBtnText: "Yes",
                                   onConfirmBtnTap: (){
-                                    _firebaseRef.child(widget.game.id).set(null);
+                                    _firebaseRef.child("-N-2kSzah2OIHkGWyQhP").set(null);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(builder: (c) => ViewGames()),

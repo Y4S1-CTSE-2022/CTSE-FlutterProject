@@ -1,6 +1,7 @@
 import 'package:epic_games/models/Category.dart';
 import 'package:epic_games/models/Game.dart';
 import 'package:epic_games/screens/AdminMenueHome.dart';
+import 'package:epic_games/screens/ViewGames.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -109,11 +110,14 @@ class _CategoryListState extends State<CategoryList> {
                                     elevation: 10,
                                     child:GestureDetector(
                                       onTap: (){
-                                        Category category = new Category(item[index]['id'], item[index]['categoryname'], item[index]['description'], item[index]['image']);
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (BuildContext context) {
-                                              return UpdateCategory(category:category);
-                                            }));
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                            MaterialPageRoute(builder: (c) => ViewGames()),
+                                                (route) => false);
+                                        // Category category = new Category(item[index]['id'], item[index]['categoryname'], item[index]['description'], item[index]['image']);
+                                        // Navigator.push(context,
+                                        //     MaterialPageRoute(builder: (BuildContext context) {
+                                        //       return UpdateCategory(category:category);
+                                        //     }));
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
