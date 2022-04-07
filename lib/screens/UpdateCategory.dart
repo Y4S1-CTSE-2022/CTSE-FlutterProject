@@ -25,7 +25,7 @@ class _UpdateCategoryState extends State<UpdateCategory> {
   final _categorynameController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("CategoryList");
+  var _firebaseRef = FirebaseDatabase().reference().child("CategoryList");
 
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();

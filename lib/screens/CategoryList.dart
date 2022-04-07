@@ -19,7 +19,7 @@ class CategoryList extends StatefulWidget {
 
 
 class _CategoryListState extends State<CategoryList> {
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("CategoryList");
+  var _firebaseRef = FirebaseDatabase().reference().child("CategoryList");
   DateTime firstPress;
 
   @override

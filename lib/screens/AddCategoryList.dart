@@ -35,7 +35,7 @@ class _AddCategoryListState extends State<AddCategoryList> {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
-      _firebaseRef.child("Games").child("CategoryList").push().set({
+      _firebaseRef.child("CategoryList").push().set({
         "categoryname": _newCategoryController.text,
         "description":_discriptioController.text,
       });

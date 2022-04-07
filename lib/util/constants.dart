@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 
-const primaryColor = Color(0xFF021f3f);
+const primaryColor = Color(0xff141823);
 const accentColor = Color(0xFFF2855E);
 const primaryColorDark = Color(0xFF6FEF8D);
 const textFieldColor = Color(0xFFFFFFFF);
