@@ -21,7 +21,6 @@ class _GameListState extends State<GameList> {
   var _firebaseRef = FirebaseDatabase().reference().child('Games');
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
   @override
@@ -38,9 +37,10 @@ class _GameListState extends State<GameList> {
             title: Text("Game List",
                 style: TextStyle(
                     color: accentColor,
-                    fontSize: size.height*0.03)
-            ),
-            centerTitle: true,
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25)),
+          centerTitle: true,
         ),
         body:SafeArea(
             child:  Container(
@@ -51,7 +51,6 @@ class _GameListState extends State<GameList> {
                   if (snap.hasData && !snap.hasError && snap.data != null && snap.data.snapshot.value != null) {
                     //assign fetched data to map
                     Map data = snap.data.snapshot.value;
-
 
                     List item = [];
                     //add data to the list

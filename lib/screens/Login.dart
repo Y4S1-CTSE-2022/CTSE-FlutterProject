@@ -1,6 +1,6 @@
 
 
-import 'package:epic_games/screens/AdminHome.dart';
+import 'package:epic_games/screens/ViewGames.dart';
 import 'package:epic_games/screens/Categories.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

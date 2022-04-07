@@ -1,3 +1,4 @@
+import 'package:epic_games/screens/AddReview.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,11 @@ class GameDetail extends StatefulWidget {
   _GameDetailState createState() => new _GameDetailState();
 }
 
-
 class _GameDetailState extends State<GameDetail> {
 
   YoutubePlayerController _controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: '${YoutubePlayer.convertUrlToId(widget.game.video_url)}',
@@ -99,34 +98,70 @@ class _GameDetailState extends State<GameDetail> {
                           height: size.height*0.03
                       ),
                       Container(
-                        alignment: Alignment.centerLeft,
-                        width: size.width*0.85,
-                        child: Text("Rating",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: size.height*0.03)
-                        ),
-                      ),
-                      Container(
-                          height: size.height*0.01
-                      ),
-                      Container(
-                        child: RatingBarIndicator(
-                          rating: widget.game.rate.toDouble(),
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                        width: size.width*0.9,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColorDark,
+                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                            ),
+                            onPressed: () {
+                              Game game = new Game(
+                                  widget.game.id,
+                                  widget.game.name,
+                                  widget.game.category,
+                                  widget.game.video_url,
+                                  widget.game.year,
+                                  widget.game.description,
+                                  widget.game.image,
+                                  widget.game.rate);
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return AddReview(rateGame: game);
+                                      }));
+                            },
+                            child: Text("Rate and Review",
+                              style: TextStyle(
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                              ),),
                           ),
-                          itemCount: 5,
-                          itemSize: size.height*0.04,
-                          direction: Axis.horizontal,
-                          itemPadding: EdgeInsets.all(5),
                         ),
                       ),
-                      Container(
-                          height: size.height*0.05
-                      ),
+                      Container(height: size.height*0.03 ),
+                      // Container(
+                      //   alignment: Alignment.centerLeft,
+                      //   width: size.width*0.85,
+                      //   child: Text("Rating",
+                      //       textAlign: TextAlign.left,
+                      //       style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: size.height*0.03)
+                      //   ),
+                      // ),
+                      // Container(
+                      //     height: size.height*0.01
+                      // ),
+                      // Container(
+                      //   child: RatingBarIndicator(
+                      //     rating: widget.game.rate.toDouble(),
+                      //     itemBuilder: (context, index) => Icon(
+                      //       Icons.star,
+                      //       color: Colors.amber,
+                      //     ),
+                      //     itemCount: 5,
+                      //     itemSize: size.height*0.04,
+                      //     direction: Axis.horizontal,
+                      //     itemPadding: EdgeInsets.all(5),
+                      //   ),
+                      // ),
+                      // Container(
+                      //     height: size.height*0.05
+                      // ),
                     ],
                   ),
                 ),

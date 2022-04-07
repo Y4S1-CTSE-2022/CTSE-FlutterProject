@@ -19,7 +19,7 @@ class CategoryList extends StatefulWidget {
 
 
 class _CategoryListState extends State<CategoryList> {
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("CategoryList");
+  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Categories");
   DateTime firstPress;
 
   @override
@@ -109,7 +109,7 @@ class _CategoryListState extends State<CategoryList> {
                                     elevation: 10,
                                     child:GestureDetector(
                                       onTap: (){
-                                        Category category = new Category(item[index]['id'], item[index]['categoryname'], item[index]['description']);
+                                        Category category = new Category(item[index]['id'], item[index]['categoryname'], item[index]['description'], item[index]['image']);
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (BuildContext context) {
                                               return UpdateCategory(category:category);

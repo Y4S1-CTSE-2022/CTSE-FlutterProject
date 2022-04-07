@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:epic_games/screens/AdminMenueHome.dart';
 import 'package:epic_games/screens/Categories.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'AdminHome.dart';
+import 'ViewGames.dart';
 import 'GameList.dart';
 import 'Login.dart';
 import '../util/constants.dart';
@@ -40,7 +41,7 @@ class _SplashState extends State<Splash> {
     } else {
       if(user.email == "admin@gmail.com"){
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (c) => AdminHome()),
+            MaterialPageRoute(builder: (c) => AdminMenueHome()),
                 (route) => false);
       }else {
         Navigator.of(context).pushAndRemoveUntil(

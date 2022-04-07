@@ -10,7 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'AdminHome.dart';
+import 'ViewGames.dart';
 import '../models/Game.dart';
 import '../util/constants.dart';
 import 'UserListView.dart';

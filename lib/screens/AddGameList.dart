@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:epic_games/models/Category.dart';
-import 'package:epic_games/screens/AdminHome.dart';
+import 'package:epic_games/screens/ViewGames.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -40,6 +40,8 @@ class _AddGameListState extends State<AddGameList> {
 
   var path = null;
   var filename = 'No file selected';
+  var _selectedCategoryId = null;
+  var timestamp = DateTime.now().microsecondsSinceEpoch;
 
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final _firebaseRef = FirebaseDatabase().reference().child("Games");
@@ -62,37 +64,48 @@ class _AddGameListState extends State<AddGameList> {
       uploadFile(filename, path);
     }
 
+    // categoryList.forEach((element) {
+    //   if (element.categoryName == _selectedCategory) {
+    //     return _selectedCategoryId = element.id;
+    //   }
+    // });
+
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
       if (_selectedCategory != 'Select') {
-        _firebaseRef.push().set({
-          "name": _nameController.text,
-          "video_url": _videoUrlController.text,
-          "category": _categoryController.text,
-          "id": user.uid+_nameController.text,
-          "image":filename,
-          "description":_descriptionController.text,
-          "year":_yearController.text,
-          "rating": _ratingController
-        });
-      } else {
-        Fluttertoast.showToast(msg:'No category selected');
+          _firebaseRef.push().set({
+            "name": _nameController.text,
+            "video_url": _videoUrlController.text,
+            "category": _selectedCategory,
+            "id": user.uid + timestamp.toString(),
+            "image":filename,
+            "description":_descriptionController.text,
+            "year":_yearController.text,
+            "rating": _ratingController
+          });
+
+          Fluttertoast.showToast(msg:'Added Successfully',backgroundColor: Colors.grey,textColor: Colors.black);
+          pr.hide();
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (c) => AdminMenueHome()),
+                  (route) => false);
       }
 
     } on FirebaseAuthException catch (e) {
       pr.hide();
-      Fluttertoast.showToast(msg: e.message);
+      Fluttertoast.showToast(msg: e.message, backgroundColor: Colors.grey,textColor: Colors.black);
 
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (c) => AdminHome()),
+          MaterialPageRoute(builder: (c) => ViewGames()),
               (route) => false);
 
     } catch (e) {
       pr.hide();
       print(e);
-      Fluttertoast.showToast(msg:'Something went wrong');
+      Fluttertoast.showToast(msg:'Something went wrong', backgroundColor: Colors.grey,textColor: Colors.black);
     }
   }
 
@@ -103,17 +116,14 @@ class _AddGameListState extends State<AddGameList> {
         allowedExtensions: ['png', 'jpg']
     );
 
-    // Generate timestamp for filename
-    var timestamp = DateTime.now().microsecondsSinceEpoch;
-
     if (result == null) {
       return;
     } else {
-      Fluttertoast.showToast(msg: timestamp.toString());
+      Fluttertoast.showToast(msg: result.files.single.name, backgroundColor: Colors.grey,textColor: Colors.black);
     }
 
     path = result.files.single.path;
-    filename = result.files.single.name;
+    filename = timestamp.toString() + "." + result.files.single.extension;
   }
 
   Future uploadFile(filename, path) async {
@@ -123,7 +133,7 @@ class _AddGameListState extends State<AddGameList> {
       await storage.ref('games_img/$filename').putFile(file);
     } on FirebaseException catch (e) {
       print(e.message);
-      Fluttertoast.showToast(msg: 'Something went wrong');
+      Fluttertoast.showToast(msg: 'Something went wrong', backgroundColor: Colors.grey,textColor: Colors.black);
     }
   }
 
@@ -135,6 +145,7 @@ class _AddGameListState extends State<AddGameList> {
     _yearController.clear();
     _descriptionController.clear();
     _selectedCategory = 'Select';
+    _selectedCategoryId = null;
   }
 
   @override
@@ -155,16 +166,16 @@ class _AddGameListState extends State<AddGameList> {
         resizeToAvoidBottomInset:false,
         extendBodyBehindAppBar: true,
         appBar:  AppBar(
-            elevation: 0,
-            toolbarHeight: size.height*0.08,
-            backgroundColor: primaryColor,
+          elevation: 0,
+          toolbarHeight: size.height*0.08,
+          backgroundColor: primaryColor,
           title: Text("ADD GAME",
               style: TextStyle(
                   color: accentColor,
                   fontFamily: 'Nunito',
                   fontWeight: FontWeight.w700,
                   fontSize: 25)),
-            centerTitle: true,
+          centerTitle: true,
           //back button
           leading: new IconButton(
               icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
@@ -200,42 +211,42 @@ class _AddGameListState extends State<AddGameList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _nameController,
-                              cursorColor: textColorLight,
+                            cursorColor: textColorLight,
                             keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "Game",
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontFamily: 'Nunito',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: adminCColor,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: adminCColor,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: accentColor,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                contentPadding:EdgeInsets.all(15.0),
-                              ),
-                              style: TextStyle(
-                                  color: textColorLight,
+                            decoration: InputDecoration(
+                              hintText: "Game",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
                                   fontFamily: 'Nunito',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 18
                               ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              contentPadding:EdgeInsets.all(15.0),
+                            ),
+                            style: TextStyle(
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
+                            ),
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Please enter the name of the game';
@@ -285,8 +296,8 @@ class _AddGameListState extends State<AddGameList> {
                               });
                             },
                             style: TextStyle(
-                              fontSize: size.height*0.023,
-                              color: textColorLight
+                                fontSize: size.height*0.023,
+                                color: textColorLight
                             ),
                             dropdownColor: textColorDark,
                             validator: (value) {
@@ -373,7 +384,7 @@ class _AddGameListState extends State<AddGameList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _yearController,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             cursorColor: textColorLight,
                             decoration: InputDecoration(
                               hintText: "Year",
@@ -409,14 +420,14 @@ class _AddGameListState extends State<AddGameList> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18
                             ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter year';
-                                } if (value.length < 4){
-                                  return 'Please enter a correct year';
-                                }
-                                return null;
-                              },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter year';
+                              } if (value.length < 4){
+                                return 'Please enter a correct year';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         Container(
@@ -494,37 +505,40 @@ class _AddGameListState extends State<AddGameList> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
                           width: size.width * 0.9,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColorDark,
-                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: primaryColorDark,
+                                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                              ),
+                              onPressed: () => {
+                                selectFile()
+                              },
+                              child: Text("Upload image",
+                                style: TextStyle(
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),),
                             ),
-                            onPressed: () => {
-                              selectFile()
-                            },
-                            child: Text("Upload image",
-                              style: TextStyle(
-                                color: textColorLight,
-                                fontFamily: 'Nunito',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),),
-                          ),
-                        ),
-
+                          )),
                         Container(height: size.height*0.02 ),
                         Container(
                           width: size.width*0.9,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: FlatButton(
-                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                              color: accentColor,
+                            borderRadius: BorderRadius.circular(10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: accentColor,
+                                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                              ),
                               onPressed: () async {
                                 if (FocusScope.of(context)
                                     .isFirstFocus) {
                                   FocusScope.of(context).requestFocus(
-                                      new FocusNode());
+                                  new FocusNode());
                                 }
                                 pr.update(message: "Please wait...");
                                 if (_formKey.currentState.validate()) {
@@ -532,14 +546,13 @@ class _AddGameListState extends State<AddGameList> {
                                   addGametoDB();
                                 }
                               },
-                              child: Text(
-                                "Add Game",
+                              child: Text("Add Game",
                                 style: TextStyle(
-                                    color: textColorDark,
-                                    fontFamily: 'Nunito',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 18),
-                              ),
+                                  color: textColorDark,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),),
                             ),
                           ),
                         ),
@@ -556,4 +569,3 @@ class _AddGameListState extends State<AddGameList> {
   }
 
 }
-
