@@ -111,7 +111,7 @@ class _CategoryListState extends State<CategoryList> {
                                     child:GestureDetector(
                                       onTap: (){
                                         Navigator.of(context).pushAndRemoveUntil(
-                                            MaterialPageRoute(builder: (c) => ViewGames()),
+                                            MaterialPageRoute(builder: (c) => ViewGames() ),
                                                 (route) => false);
                                         // Category category = new Category(item[index]['id'], item[index]['categoryname'], item[index]['description'], item[index]['image']);
                                         // Navigator.push(context,

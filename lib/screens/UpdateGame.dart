@@ -12,9 +12,9 @@ import '../models/Game.dart';
 import '../util/constants.dart';
 
 class UpdateGame extends StatefulWidget {
-  Game game = new Game("MDrjkhksdahkdakhakdkad", "sssssq", "Puzzle", "http://fggg.com", 2012, "hgsadsgd", "1649315579675274.png", 0);
-  // final Game game;
-  // UpdateGame({Key key, @required this.game}) : super(key: key);
+  // Game game = new Game("MDrjkhksdahkdakhakdkad", "sssssq", "Puzzle", "http://fggg.com", 2012, "hgsadsgd", "1649315579675274.png", 0);
+  final Game game;
+  UpdateGame({Key key, @required this.game}) : super(key: key);
   @override
   _UpdateGameState createState() => new _UpdateGameState();
 }

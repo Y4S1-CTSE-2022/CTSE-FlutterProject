@@ -234,15 +234,16 @@ class _ViewGamesState extends State<ViewGames> {
                                                           primary: accentColor,
                                                         ),
                                                         onPressed: () {
-                                                          // Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
-                                                          Navigator.of(context).pushAndRemoveUntil(
-                                                              MaterialPageRoute(builder: (c) => UpdateGame()),
-                                                                  (route) => false);
-                                                          // Navigator.push(context,
-                                                          //     MaterialPageRoute(builder: (BuildContext context) {
-                                                          //       // return UpdateGame(game:game);
-                                                          //       return AdminMenueHome();
-                                                          //     }));
+                                                          Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
+                                                          // Navigator.of(context).pushAndRemoveUntil(
+                                                          //     MaterialPageRoute(builder: (c) => UpdateGame()),
+                                                          //         (route) => false);
+                                                          print(game);
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(builder: (BuildContext context) {
+                                                                return UpdateGame(game:game);
+                                                                // return AdminMenueHome();
+                                                              }));
                                                         },
                                                         child: Text("Review",
                                                           style: TextStyle(
