@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 import 'package:epic_games/screens/AdminHome.dart';
 import 'package:epic_games/screens/Categories.dart';
 import 'package:epic_games/screens/CategoryList.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +13,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../util/constants.dart';
 import 'AdminMenueHome.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AddCategoryList extends StatefulWidget {
 
@@ -22,25 +26,35 @@ class AddCategoryList extends StatefulWidget {
 class _AddCategoryListState extends State<AddCategoryList> {
   DateTime currentBackPressTime;
   int popped = 0;
+
   final _formKey = GlobalKey<FormState>();
   final _newCategoryController = TextEditingController();
-  final _discriptioController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  var timestamp = DateTime.now().microsecondsSinceEpoch;
+  var path = null;
+  var filename = 'No file selected';
 
   ProgressDialog pr;
 
-  var _firebaseRef = FirebaseDatabase().reference();
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  var _firebaseRef = FirebaseDatabase().reference().child("Categories");
 
   Future addNewCategory() async {
     try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final User user = auth.currentUser;
+      if (path != null) {
+        uploadFile(filename, path);
 
-      _firebaseRef.child("Games").child("CategoryList").push().set({
-        "categoryname": _newCategoryController.text,
-        "description":_discriptioController.text,
-      });
+        if (filename != 'No file selected') {
+          _firebaseRef.push().set({
+            "category": _newCategoryController.text,
+            "description":_descriptionController.text,
+            "image":filename,
+          });
+        }
+      }
 
-      Fluttertoast.showToast(msg:'Added Successfully');
+      Fluttertoast.showToast(msg:'Added Successfully',backgroundColor: Colors.grey,textColor: Colors.black);
       pr.hide();
 
       Navigator.of(context).pushAndRemoveUntil(
@@ -50,18 +64,47 @@ class _AddCategoryListState extends State<AddCategoryList> {
     } catch (e) {
       pr.hide();
       print(e);
-      Fluttertoast.showToast(msg:'Something Happened');
+      Fluttertoast.showToast(msg:'Something Happened',backgroundColor: Colors.grey,textColor: Colors.black);
     }
   }
 
+  void clearData() {
+    _newCategoryController.clear();
+    _descriptionController.clear();
+    path = null;
+    filename = 'No file selected';
+  }
 
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg']
+    );
 
+    if (result == null) {
+      return;
+    } else {
+      Fluttertoast.showToast(msg: timestamp.toString(),backgroundColor: Colors.grey,textColor: Colors.black);
+    }
 
+    path = result.files.single.path;
+    filename = timestamp.toString();
+  }
 
+  Future uploadFile(filename, path) async {
+    File file = File(path);
+
+    try {
+      await storage.ref('category_img/$filename').putFile(file);
+    } on FirebaseException catch (e) {
+      print(e.message);
+      Fluttertoast.showToast(msg: 'Something went wrong',backgroundColor: Colors.grey,textColor: Colors.black);
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
     @override
@@ -117,8 +160,10 @@ class _AddCategoryListState extends State<AddCategoryList> {
                             width: size.width*0.9,
                             child:  Text("New Category",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -126,22 +171,40 @@ class _AddCategoryListState extends State<AddCategoryList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _newCategoryController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
-                              hintText: "Action ",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Category",
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                               ),
-                              filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: adminCColor,
+                                        width: 2.0),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: adminCColor,
+                                        width: 2.0),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: accentColor,
+                                        width: 2.0),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -156,31 +219,55 @@ class _AddCategoryListState extends State<AddCategoryList> {
                             width: size.width*0.9,
                             child:  Text("Description",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
                           child: TextFormField(
-                            controller: _discriptioController,
-
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.text,
+                            controller: _descriptionController,
+                            cursorColor: textColorLight,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
                             decoration: InputDecoration(
                               hintText: "Description",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              // filled: true,
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
+                              // fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -190,45 +277,39 @@ class _AddCategoryListState extends State<AddCategoryList> {
                             },
                           ),
                         ),
-                        // Container(
-                        //     margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
-                        //     width: size.width*0.9,
-                        //     child:  Text("Image",
-                        //         style: TextStyle(
-                        //             color: accentColor,
-                        //             fontSize: size.height*0.02)
-                        //     )
-                        // ),
-                        // Container(
-                        //   margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                        //   width: size.width * 0.9,
-                        //   child: TextFormField(
-                        //     controller: _imageController,
-                        //
-                        //     cursorColor: primaryColor,
-                        //     keyboardType: TextInputType.multiline,
-                        //     decoration: InputDecoration(
-                        //       hintText: "Description",
-                        //       hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.all(Radius.circular(5)),
-                        //         borderSide: BorderSide.none,
-                        //       ),
-                        //       filled: true,
-                        //       contentPadding:EdgeInsets.all(15.0),
-                        //       fillColor:textFieldColor,
-                        //     ),
-                        //     style: TextStyle(
-                        //         fontSize: size.height*0.023
-                        //     ),
-                        //     validator: (value) {
-                        //       if (value.isEmpty) {
-                        //         return 'Image can\'t be empty';
-                        //       }
-                        //       return null;
-                        //     },
-                        //   ),
-                        // ),
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
+                            width: size.width*0.9,
+                            child:  Text("Image",
+                                style: TextStyle(
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
+                            )
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                          width: size.width * 0.9,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColorDark,
+                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                            ),
+                            onPressed: () => {
+                              selectFile()
+                            },
+                            child: Text(
+                              "Upload image",
+                              style: TextStyle(
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                            ),
+                            ),
+                          ),
+                        ),
                         Container(height: size.height*0.02 ),
                         Container(
                           width: size.width*0.9,
@@ -250,16 +331,17 @@ class _AddCategoryListState extends State<AddCategoryList> {
                                 }
                               },
                               child: Text(
-                                "Add New Category",
+                                "Add Category",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.height*0.02),
+                                    color: textColorDark,
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18),
                               ),
                             ),
                           ),
                         ),
                         Container(height: size.height*0.03 ),
-
                       ],
                     ),
                   ),
