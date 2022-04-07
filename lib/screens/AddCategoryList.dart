@@ -121,11 +121,12 @@ class _AddCategoryListState extends State<AddCategoryList> {
             elevation: 0,
             toolbarHeight: size.height*0.08,
             backgroundColor: primaryColor,
-            title: Text("ADD CATEGORIES  ",
+            title: Text("ADD CATEGORY",
                 style: TextStyle(
-                    color: accentColor,
-                    fontSize: size.height*0.03)
-            ),
+                  color: accentColor,
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25)),
             centerTitle: true,
           //back button
           leading: new IconButton(
@@ -147,15 +148,6 @@ class _AddCategoryListState extends State<AddCategoryList> {
                       children: <Widget>[
                         Container(height: size.height*0.02),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
-                          width: size.width,
-                          //Display the logo
-                          child: Image.asset('assets/Runner-Games.jpg'),
-                        ),
-
-
-                        Container(
-
                             margin: const EdgeInsets.fromLTRB(0.0,20,0.0,0.0),
                             width: size.width*0.9,
                             child:  Text("New Category",
