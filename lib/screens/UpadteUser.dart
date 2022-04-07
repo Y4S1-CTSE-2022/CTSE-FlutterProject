@@ -8,12 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'ViewGames.dart';
-import '../models/Game.dart';
 import '../util/constants.dart';
-import 'UserListView.dart';
 import 'UserListView.dart';
 
 class UpdateUser extends StatefulWidget {
@@ -29,14 +25,13 @@ class _UpdateUserState extends State<UpdateUser> {
   final _emailController = TextEditingController();
   final _contactController = TextEditingController();
 
-  var _firebaseRef = FirebaseDatabase().reference().child('Games').child("Users");
+  var _firebaseRef = FirebaseDatabase().reference().child("Users");
 
   ProgressDialog pr;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _namecontroller.text = widget.userList.name;
     _emailController.text = widget.userList.email;
@@ -51,9 +46,8 @@ class _UpdateUserState extends State<UpdateUser> {
       "name": _namecontroller.text,
       "email": _emailController.text,
       "contact": _contactController.text,
-
     });
-    Fluttertoast.showToast(msg:'UserList Updated Successfully');
+    Fluttertoast.showToast(msg:'User Details Updated Successfully',backgroundColor: Colors.grey,textColor: Colors.black);
     pr.hide();
     Navigator.of(context).pop();
   }
@@ -69,12 +63,14 @@ class _UpdateUserState extends State<UpdateUser> {
         extendBodyBehindAppBar: true,
         appBar:  AppBar(
             elevation: 0,
-            toolbarHeight: size.height*0.08,
+            toolbarHeight: size.height*0.12,
             backgroundColor: primaryColor,
             title: Text(_namecontroller.text,
                 style: TextStyle(
                     color: accentColor,
-                    fontSize: size.height*0.03)
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25),
             ),
             centerTitle: true,
         ),
@@ -115,7 +111,7 @@ class _UpdateUserState extends State<UpdateUser> {
                             child: Icon(
                               Icons.delete_outline,
                               size: size.height*0.05,
-                              color: Colors.red,
+                              color: accentColor,
                             ),
                           ),
                         ),
@@ -124,8 +120,10 @@ class _UpdateUserState extends State<UpdateUser> {
                             width: size.width*0.9,
                             child:  Text("Name:",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -133,22 +131,40 @@ class _UpdateUserState extends State<UpdateUser> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _namecontroller,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
-                              hintText: "user name",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Category",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -163,8 +179,10 @@ class _UpdateUserState extends State<UpdateUser> {
                             width: size.width*0.9,
                             child:  Text("Contact:",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -172,22 +190,40 @@ class _UpdateUserState extends State<UpdateUser> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _contactController,
-                            cursorColor: primaryColor,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
-                              hintText: "07XXXXXXXX",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Category",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -204,8 +240,10 @@ class _UpdateUserState extends State<UpdateUser> {
                             width: size.width*0.9,
                             child:  Text("Email:",
                                 style: TextStyle(
-                                    color: accentColor,
-                                    fontSize: size.height*0.02)
+                                  color: textColorLight,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,)
                             )
                         ),
                         Container(
@@ -213,24 +251,40 @@ class _UpdateUserState extends State<UpdateUser> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _emailController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 3,
+                            cursorColor: textColorLight,
                             decoration: InputDecoration(
-                              hintText: "user@gmail.com",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                // width: 0.0 produces a thin "hairline" border
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                                //borderSide: const BorderSide(),
+                              hintText: "Category",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18
                               ),
-                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: adminCColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: accentColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
                             ),
                             style: TextStyle(
-                                fontSize: size.height*0.023
+                                color: textColorLight,
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18
                             ),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -264,8 +318,10 @@ class _UpdateUserState extends State<UpdateUser> {
                               child: Text(
                                 "Update User",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: size.height*0.02),
+                                    color: textColorDark,
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18),
                               ),
                             ),
                           ),
