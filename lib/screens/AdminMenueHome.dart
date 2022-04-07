@@ -1,6 +1,8 @@
 import 'package:epic_games/models/Game.dart';
-import 'package:epic_games/screens/AddCategory.dart';
+import 'package:epic_games/screens/AddCategoryList.dart';
+import 'package:epic_games/screens/CategoryList.dart';
 import 'package:epic_games/screens/GameDetail.dart';
+import 'package:epic_games/screens/UserListView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,13 +85,36 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
               Container(
                 margin: EdgeInsets.all(80),
               ),
+
               Container(
 
                 margin: EdgeInsets.all(5),
 
+
                 child: FlatButton(
-                  minWidth: 170,
-                  height: 170,
+                  minWidth: 300,
+                  height: 50,
+                  child: Text('USER LIST', style: TextStyle(fontSize: 17.0),),
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (c) =>UserListView()),
+                            (route) => false);
+
+                  },
+                ),
+              ),
+
+
+              Container(
+
+                margin: EdgeInsets.all(5),
+
+
+                child: FlatButton(
+                  minWidth: 300,
+                  height: 50,
                   child: Text('ADD GAMES', style: TextStyle(fontSize: 17.0),),
                   color: Colors.blueAccent,
                   textColor: Colors.white,
@@ -105,8 +130,8 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
               Container(
                 margin: EdgeInsets.all(5),
                 child: FlatButton(
-                  minWidth: 170,
-                  height: 170,
+                  minWidth: 300,
+                  height: 50,
                   child: Text('VIEW GAMES', style: TextStyle(fontSize: 17.0),),
                   color: Colors.blueAccent,
                   textColor: Colors.white,
@@ -121,18 +146,35 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
               Container(
                 margin: EdgeInsets.all(5),
                 child: FlatButton(
-                  minWidth: 170,
-                  height: 170,
+                  minWidth: 300,
+                  height: 50,
                   child: Text('ADD CATEGORIES', style: TextStyle(fontSize: 17.0),),
                   color: Colors.blueAccent,
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) => AddCategory()),
+                        MaterialPageRoute(builder: (c) =>AddCategoryList()),
                             (route) => false);
                   },
                 ),
               ),
+
+              Container(
+                margin: EdgeInsets.all(5),
+                child: FlatButton(
+                  minWidth: 300,
+                  height: 50,
+                  child: Text('VIEW CATEGORIES', style: TextStyle(fontSize: 17.0),),
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (c) =>CategoryList()),
+                  },
+                ),
+              ),
+
+
 
 
             ]

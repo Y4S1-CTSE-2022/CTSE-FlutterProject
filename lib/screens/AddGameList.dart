@@ -23,8 +23,7 @@ class AddGameList extends StatefulWidget {
 
 
 class _AddGameListState extends State<AddGameList> {
-  // DateTime currentBackPressTime;
-  // int popped = 0;
+
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _videoUrlController = TextEditingController();
@@ -34,7 +33,7 @@ class _AddGameListState extends State<AddGameList> {
   final _ratingController = 0;
   ProgressDialog pr;
 
-  Category category; //TODO
+  Category category;
   List<Category> categoryList = [];
   var _selectedCategory = 'Select';
 
@@ -81,17 +80,13 @@ class _AddGameListState extends State<AddGameList> {
         Fluttertoast.showToast(msg:'No category selected');
       }
 
-      Fluttertoast.showToast(msg:'Added Successfully');
-      pr.hide();
-      clearData();
-
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (c) => AdminHome()),
-      //         (route) => false);
-
     } on FirebaseAuthException catch (e) {
       pr.hide();
       Fluttertoast.showToast(msg: e.message);
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (c) => AdminHome()),
+              (route) => false);
 
     } catch (e) {
       pr.hide();
@@ -238,7 +233,6 @@ class _AddGameListState extends State<AddGameList> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
-
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: Colors.white,
@@ -293,7 +287,7 @@ class _AddGameListState extends State<AddGameList> {
                           child: TextFormField(
                             controller: _videoUrlController,
                             cursorColor: primaryColor,
-                            keyboardType: TextInputType.url,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               hintText: "http://game.com",
                               hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
@@ -331,7 +325,7 @@ class _AddGameListState extends State<AddGameList> {
                           child: TextFormField(
                               controller: _yearController,
                               cursorColor: primaryColor,
-                              keyboardType: TextInputType.datetime,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: "2022",
                                 hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
@@ -458,5 +452,6 @@ class _AddGameListState extends State<AddGameList> {
     );
 
   }
+
 }
 
