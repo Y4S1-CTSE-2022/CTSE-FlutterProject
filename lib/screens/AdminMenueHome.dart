@@ -52,13 +52,14 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
             extendBodyBehindAppBar: true,
             appBar:  AppBar(
                 elevation: 0,
-                toolbarHeight: size.height*0.08,
+                toolbarHeight: 100,
                 backgroundColor: primaryColor,
-                title: Text("Admin Menu Home",
+                title: Text("Admin Menu",
                     style: TextStyle(
                         color: accentColor,
-                        fontSize: size.height*0.03)
-                ),
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 25)),
                 centerTitle: true,
                 actions: <Widget>[
                   Container(
@@ -79,108 +80,238 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   )
                 ]
             ),
-            body: Center(child: Column(children: <Widget>[
-
-
-              Container(
-                margin: EdgeInsets.all(80),
+            body: Container(
+              margin: const EdgeInsets.all(10),
+              child: GridView.count(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.0,
+                  mainAxisSpacing: 20.0,
+                  crossAxisSpacing: 20.0,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
+                            // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => AddGameList()),
+                                    (route) => false);
+                          },
+                          child: Text("Add Game",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
+                            // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => ViewGames()),
+                                    (route) => false);
+                          },
+                          child: Text("Games List",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
+                            // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => AddCategoryList()),
+                                    (route) => false);
+                          },
+                          child: Text("Add Category",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
+                            // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => CategoryList()),
+                                    (route) => false);
+                          },
+                          child: Text("Category List",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: accentColor,
+                            // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => UserListView()),
+                                    (route) => false);
+                          },
+                          child: Text("User List",
+                            style: TextStyle(
+                              color: textColorDark,
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                            ),),
+                        ),
+                      ),
+                    ),
+                  ],
               ),
-
-              Container(
-
-                margin: EdgeInsets.all(5),
-
-
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('USER LIST', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>UserListView()),
-                            (route) => false);
-
-                  },
-                ),
-              ),
-
-
-              Container(
-
-                margin: EdgeInsets.all(5),
-
-
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('ADD GAMES', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>AddGameList()),
-                            (route) => false);
-
-                  },
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.all(5),
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('VIEW GAMES', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) => ViewGames()),
-                            (route) => false);
-                  },
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.all(5),
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('ADD CATEGORIES', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>AddCategoryList()),
-                            (route) => false);
-                  },
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.all(5),
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('VIEW CATEGORIES', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) => CategoryList()),
-                            (route) => false);
-                  },
-                ),
-              ),
-
-
-
-
-            ]
             )
-            )
+          // Center(child: Column(children: <Widget>[
+            //
+            //
+            //   Container(
+            //     margin: EdgeInsets.all(5),
+            //   ),
+            //
+            //   Container(
+            //     margin: EdgeInsets.all(5),
+            //
+            //
+            //     child: FlatButton(
+            //       minWidth: 300,
+            //       height: 50,
+            //       child: Text('USER LIST', style: TextStyle(fontSize: 17.0),),
+            //       color: Colors.blueAccent,
+            //       textColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.of(context).pushAndRemoveUntil(
+            //             MaterialPageRoute(builder: (c) =>UserListView()),
+            //                 (route) => false);
+            //
+            //       },
+            //     ),
+            //   ),
+            //
+            //
+            //   Container(
+            //
+            //     margin: EdgeInsets.all(5),
+            //
+            //
+            //     child: FlatButton(
+            //       minWidth: 300,
+            //       height: 50,
+            //       child: Text('ADD GAMES', style: TextStyle(fontSize: 17.0),),
+            //       color: Colors.blueAccent,
+            //       textColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.of(context).pushAndRemoveUntil(
+            //             MaterialPageRoute(builder: (c) =>AddGameList()),
+            //                 (route) => false);
+            //
+            //       },
+            //     ),
+            //   ),
+            //
+            //   Container(
+            //     margin: EdgeInsets.all(5),
+            //     child: FlatButton(
+            //       minWidth: 300,
+            //       height: 50,
+            //       child: Text('VIEW GAMES', style: TextStyle(fontSize: 17.0),),
+            //       color: Colors.blueAccent,
+            //       textColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.of(context).pushAndRemoveUntil(
+            //             MaterialPageRoute(builder: (c) => ViewGames()),
+            //                 (route) => false);
+            //       },
+            //     ),
+            //   ),
+            //
+            //   Container(
+            //     margin: EdgeInsets.all(5),
+            //     child: FlatButton(
+            //       minWidth: 300,
+            //       height: 50,
+            //       child: Text('ADD CATEGORIES', style: TextStyle(fontSize: 17.0),),
+            //       color: Colors.blueAccent,
+            //       textColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.of(context).pushAndRemoveUntil(
+            //             MaterialPageRoute(builder: (c) =>AddCategoryList()),
+            //                 (route) => false);
+            //       },
+            //     ),
+            //   ),
+            //
+            //   Container(
+            //     margin: EdgeInsets.all(5),
+            //     child: FlatButton(
+            //       minWidth: 300,
+            //       height: 50,
+            //       child: Text('VIEW CATEGORIES', style: TextStyle(fontSize: 17.0),),
+            //       color: Colors.blueAccent,
+            //       textColor: Colors.white,
+            //       onPressed: () {
+            //         Navigator.of(context).pushAndRemoveUntil(
+            //             MaterialPageRoute(builder: (c) => CategoryList()),
+            //                 (route) => false);
+            //       },
+            //     ),
+            //   ),
+            //
+            //
+            //
+            //
+            // ]
+            // )
+            // )
         ),
         onWillPop: onWillPop
     );
