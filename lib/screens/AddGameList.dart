@@ -90,7 +90,7 @@ class _AddGameListState extends State<AddGameList> {
           pr.hide();
 
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (c) => AdminMenueHome()),
+              MaterialPageRoute(builder: (c) => ViewGames()),
                   (route) => false);
       }
 
@@ -167,7 +167,7 @@ class _AddGameListState extends State<AddGameList> {
         extendBodyBehindAppBar: true,
         appBar:  AppBar(
           elevation: 0,
-          toolbarHeight: size.height*0.08,
+          toolbarHeight: size.height*0.11,
           backgroundColor: primaryColor,
           title: Text("ADD GAME",
               style: TextStyle(
