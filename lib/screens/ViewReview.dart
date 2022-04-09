@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'Login.dart';
 import 'UpdateCategory.dart';
@@ -22,6 +23,8 @@ class ViewReview extends StatefulWidget {
 
 class _ViewReviewState extends State<ViewReview> {
   var _firebaseRef = FirebaseDatabase().reference().child("Review");
+
+  double rate = 0;
   DateTime firstPress;
 
   @override
@@ -98,7 +101,9 @@ class _ViewReviewState extends State<ViewReview> {
                         Map data = snap.data.snapshot.value;
                         List item = [];
                         //add data to the list
-                        data.forEach((index, data) => item.add({"id": index,"review": data['review']}));
+                        data.forEach((index, data) => {
+                          item.add({"id": index,"review": data['review'], "rating": data['rating']})
+                        });
                         //create a list view
                         return ListView.builder(
                           itemCount: item.length,
@@ -111,7 +116,7 @@ class _ViewReviewState extends State<ViewReview> {
                                     elevation: 10,
                                     child:GestureDetector(
                                       onTap: (){
-                                        Review review = new Review(item[index]['id'], item[index]['review']);
+                                        Review review = new Review(item[index]['id'], item[index]['review'], double.parse(item[index]['rating'].toString()));
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (BuildContext context) {
                                               return UpdateReview(review:review);
@@ -147,7 +152,22 @@ class _ViewReviewState extends State<ViewReview> {
                                               padding: EdgeInsets.only(left: 10),
                                               child: Column(
                                                 children: [
-
+                                                  Container(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: RatingBar.builder(
+                                                      initialRating: item[index]['rating'].toDouble(),
+                                                      minRating: 1,
+                                                      direction: Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      itemCount: 5,
+                                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                      itemBuilder: (context, _) => Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                      itemSize: 20,
+                                                    ),
+                                                  ),
                                                   Container(
                                                     height: size.width*0.15,
                                                     alignment: Alignment.centerLeft,
@@ -159,16 +179,6 @@ class _ViewReviewState extends State<ViewReview> {
                                                         )
                                                     ),
                                                   ),
-                                                  // Container(
-                                                  //   // height: size.width*0.05,
-                                                  //   // alignment: Alignment.topRight,
-                                                  //   // child: Text(item[index]['category'],
-                                                  //   //     style: TextStyle(
-                                                  //   //       color: Colors.pink,
-                                                  //   //       fontSize: size.width*0.035,
-                                                  //   //     )
-                                                  //   // ),
-                                                  // )
                                                 ],
                                               ),
                                             )

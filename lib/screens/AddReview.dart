@@ -21,6 +21,7 @@ class _AddReviewState extends State<AddReview> {
   int popped = 0;
   final _formKey = GlobalKey<FormState>();
   final _reviewController = TextEditingController();
+  final _rateController = TextEditingController();
 
   ProgressDialog pr;
 
@@ -32,6 +33,7 @@ class _AddReviewState extends State<AddReview> {
       final User user = auth.currentUser;
 
       _firebaseRef.child("Review").push().set({
+        "rating": double.parse(_rateController.text),
         "review":_reviewController.text,
       });
 
@@ -48,11 +50,6 @@ class _AddReviewState extends State<AddReview> {
       Fluttertoast.showToast(msg:'Something Happened');
     }
   }
-
-
-
-
-
 
   @override
   void initState() {
@@ -108,12 +105,54 @@ class _AddReviewState extends State<AddReview> {
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
                             width: size.width*0.9,
+                            child:  Text("Rate",
+                                style: TextStyle(
+                                    color: accentColor,
+                                    fontSize: size.height*0.02)
+                            )
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
+                          width: size.width * 0.9,
+                          child: TextFormField(
+                            controller: _rateController,
+                            cursorColor: primaryColor,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "5",
+                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              contentPadding:EdgeInsets.all(15.0),
+                              fillColor:textFieldColor,
+                            ),
+                            style: TextStyle(
+                                fontSize: size.height*0.023
+                            ),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Rate can\'t be empty';
+                              }
+                              if(value.length >= 5){
+                                return 'Rate can\'t be more than 5';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
+                            width: size.width*0.9,
                             child:  Text("Review",
                                 style: TextStyle(
                                     color: accentColor,
                                     fontSize: size.height*0.02)
                             )
                         ),
+
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,

@@ -24,6 +24,7 @@ class UpdateReview extends StatefulWidget {
 
 class _UpdateReviewState extends State<UpdateReview> {
   final _reviewController = TextEditingController();
+  double rate = 0;
 
   var _firebaseRef = FirebaseDatabase().reference().child("Review");
 
@@ -35,11 +36,13 @@ class _UpdateReviewState extends State<UpdateReview> {
     // TODO: implement initState
     super.initState();
     _reviewController.text = widget.review.review;
+    rate = widget.review.rating;
   }
 
   Future update() async {
 
     _firebaseRef.child(widget.review.id).update({
+      "rating": rate.toDouble(),
       "review": _reviewController.text,
     });
     Fluttertoast.showToast(msg:'Review Updated Successfully');
@@ -110,6 +113,29 @@ class _UpdateReviewState extends State<UpdateReview> {
                           ),
                         ),
                       ),
+                      Container(height: size.height*0.02 ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: RatingBar.builder(
+                          initialRating: 3,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          unratedColor: Colors.white10,
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                            rate = rating;
+                          },
+                          itemSize: 40,
+                        ),
+                      ),
+                      Container(height: size.height*0.02 ),
                       Container(
                           margin: const EdgeInsets.fromLTRB(0.0,0,0.0,0.0),
                           width: size.width*0.9,

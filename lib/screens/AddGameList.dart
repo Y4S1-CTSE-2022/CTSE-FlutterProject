@@ -368,7 +368,6 @@ class _AddGameListState extends State<AddGameList> {
                           width: size.width * 0.9,
                           child: TextFormField(
                             controller: _rateController,
-
                             cursorColor: primaryColor,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
