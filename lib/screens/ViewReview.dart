@@ -2,6 +2,7 @@ import 'package:epic_games/models/Category.dart';
 import 'package:epic_games/models/Game.dart';
 import 'package:epic_games/models/Review.dart';
 import 'package:epic_games/screens/AdminMenueHome.dart';
+import 'package:epic_games/screens/Categories.dart';
 import 'package:epic_games/screens/CategoryList.dart';
 import 'package:epic_games/screens/UpdateReview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,7 +71,7 @@ class _ViewReviewState extends State<ViewReview> {
                 leading: new IconButton(
                     icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
                     onPressed: () =>    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) => AdminMenueHome()),
+                        MaterialPageRoute(builder: (c) => Categories()),
                             (route) => false)
                 ),
 
@@ -98,17 +99,22 @@ class _ViewReviewState extends State<ViewReview> {
                 child:  Container(
                   height: size.height*0.92,
                   child: StreamBuilder(
-                    stream: _firebaseRef.equalTo(gid).onValue,
+                    stream: _firebaseRef.onValue,
                     builder: (context, snap) {
                       print(widget.gameId);
                       if (snap.hasData && !snap.hasError && snap.data != null && snap.data.snapshot.value as Map != null ) {
                         //assign fetched data to map
                         Map data = snap.data.snapshot.value;
+                        print(data);
                         List item = [];
+                        List filtered = [];
                         //add data to the list
                         data.forEach((index, data) => {
-                          item.add({"id": index,"review": data['review'], "rating": data['rating'], "user": data['userId'], "game": data['gameId']})
+                          if (data["gameId"] == widget.gameId && data["userId"] == widget.userId) {
+                            item.add({"id": index,"review": data['review'], "rating": data['rating'], "user": data['userId'], "game": data['gameId']})
+                          }
                         });
+                        // filtered = item.where('gameId',isEqualTo);
                         //create a list view
                         return ListView.builder(
                           itemCount: item.length,
@@ -121,9 +127,14 @@ class _ViewReviewState extends State<ViewReview> {
                                     elevation: 10,
                                     child:GestureDetector(
                                       onTap: (){
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                            MaterialPageRoute(builder: (c) => CategoryList()),
-                                                (route) => false);
+                                        // Review review = new Review(item[index]['id'], item[index]['review'], double.parse(item[index]['rating'].toString()), item[index]['userId'], item[index]['gameId']);
+                                        // Navigator.push(context,
+                                        //     MaterialPageRoute(builder: (BuildContext context) {
+                                        //       return UpdateReview(review: review);
+                                        //     }));
+                                        // Navigator.of(context).pushAndRemoveUntil(
+                                        //     MaterialPageRoute(builder: (c) => Categories()),
+                                        //         (route) => false);
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
@@ -159,6 +170,29 @@ class _ViewReviewState extends State<ViewReview> {
                                                           color: Colors.black54,
                                                           fontSize: size.width*0.035,
                                                         )
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: size.width*0.9,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      child: FlatButton(
+                                                        padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                                                        color: accentColor,
+                                                        onPressed: () {
+                                                          Review review = new Review(item[index]['id'], item[index]['review'], double.parse(item[index]['rating'].toString()), item[index]['userId'], item[index]['gameId']);
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(builder: (BuildContext context) {
+                                                                return UpdateReview(review: review);
+                                                              }));
+                                                        },
+                                                        child: Text(
+                                                          "Review",
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: size.height*0.02),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],

@@ -1,6 +1,8 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:epic_games/models/Review.dart';
+import 'package:epic_games/screens/Categories.dart';
 import 'package:epic_games/screens/CategoryList.dart';
+import 'package:epic_games/screens/GameDetail.dart';
 import 'package:epic_games/screens/ViewReview.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,9 +49,14 @@ class _UpdateReviewState extends State<UpdateReview> {
     });
     Fluttertoast.showToast(msg:'Review Updated Successfully');
     pr.hide();
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => ViewReview()),
-            (route) => false);
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (BuildContext context) {
+    //       return ViewReview(gameId: widget.review.gameId, userId: widget.review.userId);
+    //     }));
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (c) => ViewReview(gameId: widget.review.gameId, userId: widget.review.userId)),
+    //         (route) => false);
   }
   @override
   Widget build(BuildContext context) {
@@ -195,7 +202,11 @@ class _UpdateReviewState extends State<UpdateReview> {
                               pr.update(message: "Please wait...");
                               if (_formKey.currentState.validate()) {
                                 await pr.show();
-                                update();
+                                await update();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (BuildContext context) {
+                                      return Categories();
+                                    }));
                               }
                             },
                             child: Text(

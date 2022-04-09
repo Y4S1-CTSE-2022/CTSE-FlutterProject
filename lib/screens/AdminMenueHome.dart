@@ -177,40 +177,6 @@ class _AdminMenueHomeState extends State<AdminMenueHome> {
                   },
                 ),
               ),
-
-              Container(
-                margin: EdgeInsets.all(5),
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('ADD REVIEW', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) => AddReview()),
-                            (route) => false);
-                  },
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: FlatButton(
-                  minWidth: 300,
-                  height: 50,
-                  child: Text('VIEW REVIEW', style: TextStyle(fontSize: 17.0),),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (c) =>ViewReview()),
-                            (route) => false);
-                  },
-                ),
-              ),
-
-
-
             ]
             )
             )
