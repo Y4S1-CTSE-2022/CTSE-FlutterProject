@@ -4,13 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../util/constants.dart';
 import 'AdminMenueHome.dart';
 
 class AddReview extends StatefulWidget {
-
+  final String gameId;
+  AddReview({Key key, @required this.gameId}) : super(key: key);
   @override
   _AddReviewState createState() => new _AddReviewState();
 }
@@ -21,28 +23,31 @@ class _AddReviewState extends State<AddReview> {
   int popped = 0;
   final _formKey = GlobalKey<FormState>();
   final _reviewController = TextEditingController();
-  final _rateController = TextEditingController();
+  double rate = 0;
 
   ProgressDialog pr;
 
   var _firebaseRef = FirebaseDatabase().reference();
 
-  Future addNewCategory() async {
+  Future addNewReview() async {
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User user = auth.currentUser;
 
       _firebaseRef.child("Review").push().set({
-        "rating": double.parse(_rateController.text),
+        "gameId": widget.gameId,
+        "userId": user.uid,
+        "rating": rate.toDouble(),
         "review":_reviewController.text,
       });
 
       Fluttertoast.showToast(msg:'Added Successfully');
       pr.hide();
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (c) => ViewReview()),
-              (route) => false);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) {
+            return ViewReview(gameId: widget.gameId);
+          }));
 
     } catch (e) {
       pr.hide();
@@ -101,7 +106,7 @@ class _AddReviewState extends State<AddReview> {
                           //Display the logo
                           child: Image.asset('assets/Runner-Games.jpg'),
                         ),
-
+                        Container(height: size.height*0.03 ),
                         Container(
                             margin: const EdgeInsets.fromLTRB(0.0,5,0.0,0.0),
                             width: size.width*0.9,
@@ -112,35 +117,24 @@ class _AddReviewState extends State<AddReview> {
                             )
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
-                          width: size.width * 0.9,
-                          child: TextFormField(
-                            controller: _rateController,
-                            cursorColor: primaryColor,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: "5",
-                              hintStyle: TextStyle(fontSize: size.height*0.022,color: Colors.black26),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              contentPadding:EdgeInsets.all(15.0),
-                              fillColor:textFieldColor,
+                          alignment: Alignment.center,
+                          child: RatingBar.builder(
+                            initialRating: rate,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
                             ),
-                            style: TextStyle(
-                                fontSize: size.height*0.023
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Rate can\'t be empty';
-                              }
-                              if(value.length >= 5){
-                                return 'Rate can\'t be more than 5';
-                              }
-                              return null;
+                            unratedColor: Colors.white10,
+                            onRatingUpdate: (rating) {
+                              print(rating);
+                              rate = rating;
                             },
+                            itemSize: 40,
                           ),
                         ),
                         Container(
@@ -152,7 +146,7 @@ class _AddReviewState extends State<AddReview> {
                                     fontSize: size.height*0.02)
                             )
                         ),
-
+                        Container(height: size.height*0.02 ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
                           width: size.width * 0.9,
@@ -202,7 +196,7 @@ class _AddReviewState extends State<AddReview> {
                                 pr.update(message: "Please wait...");
                                 if (_formKey.currentState.validate()) {
                                   await pr.show();
-                                  addNewCategory();
+                                  addNewReview();
                                 }
                               },
                               child: Text(

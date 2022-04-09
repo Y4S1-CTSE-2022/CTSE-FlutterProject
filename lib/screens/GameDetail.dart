@@ -1,4 +1,6 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:epic_games/screens/AddReview.dart';
+import 'package:epic_games/screens/ViewReview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -31,6 +33,9 @@ class _GameDetailState extends State<GameDetail> {
   }
     @override
   Widget build(BuildContext context) {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User user = auth.currentUser;
+
     Size size = MediaQuery.of(context).size;
     return  Scaffold(
         backgroundColor: primaryColor,
@@ -65,51 +70,16 @@ class _GameDetailState extends State<GameDetail> {
                                 fontSize: size.height*0.035)
                         ),
                       ),
-                      Container(height: size.height*0.01),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        width: size.width*0.85,
-                        child: Text("${widget.game.category}",
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: size.height*0.025)
-                        ),
-                      ),
-                      Container(height: size.height*0.005),
+                      Container(height: size.height*0.05),
                       Container(
                         width: size.width*0.85,
                         child: YoutubePlayer(
                           controller: _controller,
                         ),
                       ),
+                      Container(height: size.height*0.005),
                       Container(
-                        height: size.height*0.05
-                      ),
-                      Container(
-                        width: size.width*0.85,
-                        child: Text(
-                          "\t\t\t\t\t${widget.game.description}",
-                          style: TextStyle(
-                            fontSize: size.height*0.023,
-                            color: Colors.white70
-                          ),
-                        ),
-                      ),
-                      Container(
-                          height: size.height*0.03
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        width: size.width*0.85,
-                        child: Text("Rating",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: size.height*0.03)
-                        ),
-                      ),
-                      Container(
-                          height: size.height*0.01
+                          height: size.height*0.05
                       ),
                       Container(
                         child: RatingBarIndicator(
@@ -124,9 +94,98 @@ class _GameDetailState extends State<GameDetail> {
                           itemPadding: EdgeInsets.all(5),
                         ),
                       ),
+                      Container(height: size.height*0.005),
+                      Container(
+                        height: size.height*0.05
+                      ),
+                      Container(
+                          height: size.height*0.03
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: size.width*0.85,
+                        child: Text("Description",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: size.height*0.03)
+                        ),
+                      ),
+                      Container(
+                          height: size.height*0.01
+                      ),
+                      Container(
+                          height: size.height*0.01
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: size.width*0.85,
+                        child: Text(
+                          "${widget.game.description}",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: size.height*0.023,
+                              color: Colors.white70
+                          ),
+                        ),
+                      ),
+                      Container(
+                          height: size.height*0.01
+                      ),
+
                       Container(
                           height: size.height*0.05
                       ),
+                      Container(
+                        width: size.width*0.9,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: FlatButton(
+                            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                            color: accentColor,
+                            onPressed: () {
+                              // Navigator.of(context).pushAndRemoveUntil(
+                              //     MaterialPageRoute(builder: (c) => AddReview()),
+                              //         (route) => false);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) {
+                                    return AddReview(gameId: widget.game.id);
+                                  }));
+                            },
+                            child: Text(
+                              "Add Review",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: size.height*0.02),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          height: size.height*0.05
+                      ),
+                      Container(
+                        width: size.width*0.9,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: FlatButton(
+                            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                            color: accentColor,
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) {
+                                    return ViewReview(gameId: widget.game.id, userId: user.uid);
+                                  }));
+                            },
+                            child: Text(
+                              "View Review",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: size.height*0.02),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

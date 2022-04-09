@@ -2,6 +2,7 @@ import 'package:epic_games/models/Category.dart';
 import 'package:epic_games/models/Game.dart';
 import 'package:epic_games/models/Review.dart';
 import 'package:epic_games/screens/AdminMenueHome.dart';
+import 'package:epic_games/screens/CategoryList.dart';
 import 'package:epic_games/screens/UpdateReview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -15,7 +16,9 @@ import 'UpdateGame.dart';
 import '../util/constants.dart';
 
 class ViewReview extends StatefulWidget {
-
+  final String gameId;
+  final String userId;
+  ViewReview({Key key, @required this.gameId, @required this.userId}) : super(key: key);
   @override
   _ViewReviewState createState() => new _ViewReviewState();
 }
@@ -23,7 +26,6 @@ class ViewReview extends StatefulWidget {
 
 class _ViewReviewState extends State<ViewReview> {
   var _firebaseRef = FirebaseDatabase().reference().child("Review");
-
   double rate = 0;
   DateTime firstPress;
 
@@ -46,6 +48,8 @@ class _ViewReviewState extends State<ViewReview> {
 
   @override
   Widget build(BuildContext context) {
+    final String gid = widget.gameId;
+
     Size size = MediaQuery.of(context).size;
     return  WillPopScope(
         child: Scaffold(
@@ -94,15 +98,16 @@ class _ViewReviewState extends State<ViewReview> {
                 child:  Container(
                   height: size.height*0.92,
                   child: StreamBuilder(
-                    stream: _firebaseRef.onValue,
+                    stream: _firebaseRef.equalTo(gid).onValue,
                     builder: (context, snap) {
+                      print(widget.gameId);
                       if (snap.hasData && !snap.hasError && snap.data != null && snap.data.snapshot.value as Map != null ) {
                         //assign fetched data to map
                         Map data = snap.data.snapshot.value;
                         List item = [];
                         //add data to the list
                         data.forEach((index, data) => {
-                          item.add({"id": index,"review": data['review'], "rating": data['rating']})
+                          item.add({"id": index,"review": data['review'], "rating": data['rating'], "user": data['userId'], "game": data['gameId']})
                         });
                         //create a list view
                         return ListView.builder(
@@ -116,40 +121,17 @@ class _ViewReviewState extends State<ViewReview> {
                                     elevation: 10,
                                     child:GestureDetector(
                                       onTap: (){
-                                        Review review = new Review(item[index]['id'], item[index]['review'], double.parse(item[index]['rating'].toString()));
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (BuildContext context) {
-                                              return UpdateReview(review:review);
-                                            }));
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                            MaterialPageRoute(builder: (c) => CategoryList()),
+                                                (route) => false);
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                                         child: Row(
                                           children: [
                                             Container(
-                                              width: size.width*0.2,
-                                              child: Container(
-                                                width: size.width*0.3,
-                                                height: size.width*0.3,
-                                                child: Card(
-                                                    elevation: 20,
-                                                    shadowColor: Colors.black12,
-                                                    color: accentColor,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                                                    child: Container(
-                                                      // child: ClipRRect(
-                                                      //   borderRadius: BorderRadius.circular(30),
-                                                      //   child: Image.network(item[index]["assets/Runner-Games.jpg"], fit: BoxFit.cover),
-                                                      // ),
-                                                    )
-                                                ),
-                                              ),
-                                            ),
-
-                                            Container(
                                               width: size.width*0.8-70,
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding: EdgeInsets.only(left: 10, top: 10),
                                               child: Column(
                                                 children: [
                                                   Container(

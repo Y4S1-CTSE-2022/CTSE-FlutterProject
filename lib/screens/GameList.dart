@@ -46,16 +46,14 @@ class _GameListState extends State<GameList> {
             child:  Container(
               height: size.height*0.92,
               child: StreamBuilder(
-                stream: _firebaseRef.orderByChild("category").equalTo(widget.category).onValue,
+                stream: _firebaseRef.onValue,
                 builder: (context, snap) {
                   if (snap.hasData && !snap.hasError && snap.data != null && snap.data.snapshot.value != null) {
                     //assign fetched data to map
                     Map data = snap.data.snapshot.value;
-
-
                     List item = [];
                     //add data to the list
-                    data.forEach((index, data) => item.add({"id": index, "name": data['name'],"category": data['category'],"video_url": data['video_url'],"year": data['year'],"description": data['description'],"image": data['image'],"rate": data['rate']}));
+                    data.forEach((index, data) => item.add({"id": index, "name": data['name'],"category": data['category'],"video_url": data['video_url'],"year": data['year'],"description": data['description'],"image": data['image'],"rating": data['rating']}));
                     //create a list view
                     return ListView.builder(
                       itemCount: item.length,
@@ -67,7 +65,7 @@ class _GameListState extends State<GameList> {
                                 elevation: 10,
                                 child:GestureDetector(
                                   onTap: (){
-                                    Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rate'].toString()));
+                                    Game game = new Game(item[index]['id'], item[index]['name'], item[index]['category'], item[index]['video_url'], item[index]['year'], item[index]['description'], item[index]['image'], double.parse(item[index]['rating'].toString()));
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (BuildContext context) {
                                           return GameDetail(game:game);
@@ -147,8 +145,6 @@ class _GameListState extends State<GameList> {
                     return Container(
                       color: primaryColor,
                       child: Text("Empty List",textAlign:TextAlign.center,style: TextStyle(fontSize: 25,color: Colors.white)),
-
-
                     );
                 },
               ),

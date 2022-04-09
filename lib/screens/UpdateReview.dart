@@ -117,7 +117,7 @@ class _UpdateReviewState extends State<UpdateReview> {
                       Container(
                         alignment: Alignment.center,
                         child: RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: rate,
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
