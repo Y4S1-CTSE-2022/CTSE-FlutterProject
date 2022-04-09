@@ -98,7 +98,7 @@ class _UpdateUserState extends State<UpdateUser> {
                               CoolAlert.show(
                                   context: context,
                                   type: CoolAlertType.confirm,
-                                  text: "Do you want to delete this game?",
+                                  text: "Do you want to delete this user?",
                                   confirmBtnText: "Yes",
                                   onConfirmBtnTap: (){
                                     _firebaseRef.child(widget.userList.id).set(null);

@@ -92,7 +92,7 @@ class _UpdateReviewState extends State<UpdateReview> {
                             CoolAlert.show(
                                 context: context,
                                 type: CoolAlertType.confirm,
-                                text: "Do you want to delete this game?",
+                                text: "Do you want to delete this review?",
                                 confirmBtnText: "Yes",
                                 onConfirmBtnTap: (){
                                   _firebaseRef.child(widget.review.id).set(null);
