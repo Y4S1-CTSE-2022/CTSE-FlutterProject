@@ -16,16 +16,16 @@ import 'UpdateCategory.dart';
 import 'UpdateGame.dart';
 import '../util/constants.dart';
 
-class ViewReview extends StatefulWidget {
+class ViewAllReviews extends StatefulWidget {
   final String gameId;
   final String userId;
-  ViewReview({Key key, @required this.gameId, @required this.userId}) : super(key: key);
+  ViewAllReviews({Key key, @required this.gameId, @required this.userId}) : super(key: key);
   @override
-  _ViewReviewState createState() => new _ViewReviewState();
+  _ViewAllReviewsState createState() => new _ViewAllReviewsState();
 }
 
 
-class _ViewReviewState extends State<ViewReview> {
+class _ViewAllReviewsState extends State<ViewAllReviews> {
   var _firebaseRef = FirebaseDatabase().reference().child("Review");
   double rate = 0;
   DateTime firstPress;
@@ -109,7 +109,7 @@ class _ViewReviewState extends State<ViewReview> {
                         List filtered = [];
                         //add data to the list
                         data.forEach((index, data) => {
-                          if (data["gameId"] == widget.gameId && data["userId"] == widget.userId) {
+                          if (data["gameId"] == widget.gameId) {
                             item.add({"id": index,"review": data['review'], "rating": data['rating'], "user": data['userId'], "game": data['gameId']})
                           }
                         });
@@ -171,29 +171,8 @@ class _ViewReviewState extends State<ViewReview> {
                                                         )
                                                     ),
                                                   ),
-                                                  Container(
-                                                    width: size.width*0.9,
-                                                    child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                      child: FlatButton(
-                                                        padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                                                        color: accentColor,
-                                                        onPressed: () {
-                                                          Review review = new Review(item[index]['id'], item[index]['review'], double.parse(item[index]['rating'].toString()), item[index]['userId'], item[index]['gameId']);
-                                                          Navigator.push(context,
-                                                              MaterialPageRoute(builder: (BuildContext context) {
-                                                                return UpdateReview(review: review);
-                                                              }));
-                                                        },
-                                                        child: Text(
-                                                          "Update Review",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: size.height*0.02),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
+
+
                                                 ],
                                               ),
                                             )

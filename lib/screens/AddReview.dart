@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:epic_games/screens/ViewAllReviews.dart';
 import 'package:epic_games/screens/ViewReview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -28,11 +29,12 @@ class _AddReviewState extends State<AddReview> {
   ProgressDialog pr;
 
   var _firebaseRef = FirebaseDatabase().reference();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
 
   Future addNewReview() async {
+
     try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final User user = auth.currentUser;
 
       _firebaseRef.child("Review").push().set({
         "gameId": widget.gameId,
@@ -60,6 +62,7 @@ class _AddReviewState extends State<AddReview> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    user = auth.currentUser;
   }
   @override
   Widget build(BuildContext context) {
@@ -201,6 +204,30 @@ class _AddReviewState extends State<AddReview> {
                               },
                               child: Text(
                                 "Add New Review",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: size.height*0.02),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(height: size.height*0.03 ),
+                        Container(height: size.height*0.03 ),
+                        Container(
+                          width: size.width*0.9,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: FlatButton(
+                              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+                              color: accentColor,
+                              onPressed: () async {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (BuildContext context) {
+                                      return ViewReview(gameId: widget.gameId, userId: user.uid);
+                                    }));
+                              },
+                              child: Text(
+                                "View Reviews",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: size.height*0.02),

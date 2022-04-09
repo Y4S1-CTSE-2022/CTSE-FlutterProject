@@ -1,6 +1,8 @@
 import 'package:epic_games/screens/AddReview.dart';
+import 'package:epic_games/screens/ViewAllReviews.dart';
 import 'package:epic_games/screens/ViewReview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -174,7 +176,7 @@ class _GameDetailState extends State<GameDetail> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (BuildContext context) {
-                                    return ViewReview(gameId: widget.game.id, userId: user.uid);
+                                    return ViewAllReviews(gameId: widget.game.id, userId: user.uid);
                                   }));
                             },
                             child: Text(
