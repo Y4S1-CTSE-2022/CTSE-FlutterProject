@@ -52,10 +52,10 @@ class _AddGameListState extends State<AddGameList> {
     _dbCategories.once().then((DatabaseEvent databaseEvent) {
       Map<dynamic, dynamic> categories = databaseEvent.snapshot.value;
 
-      categories.forEach((key, value) {
-        Category category = Category.fromJson(value);
-        categoryList.add(category);
-      });
+      // categories.forEach((key, value) {
+      //   Category category = Category.fromJson(value);
+      //   categoryList.add(category);
+      // });
     });
   }
 

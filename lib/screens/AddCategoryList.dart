@@ -38,7 +38,7 @@ class _AddCategoryListState extends State<AddCategoryList> {
   ProgressDialog pr;
 
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  var _firebaseRef = FirebaseDatabase().reference().child("Categories");
+  var _firebaseRef = FirebaseDatabase().reference().child("Category");
 
   Future addNewCategory() async {
     try {

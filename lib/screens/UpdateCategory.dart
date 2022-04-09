@@ -34,14 +34,14 @@ class _UpdateCategoryState extends State<UpdateCategory> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _categorynameController.text = widget.category.categoryName;
+    _categorynameController.text = widget.category.category;
     _descriptionController.text = widget.category.description;
   }
 
   Future update() async {
 
     _firebaseRef.child(widget.category.id).update({
-      "categoryname": _categorynameController.text,
+      "category": _categorynameController.text,
       "description": _descriptionController.text,
 
     });
